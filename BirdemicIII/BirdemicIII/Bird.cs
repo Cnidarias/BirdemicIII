@@ -53,7 +53,7 @@ namespace BirdemicIII
         }
         public override void Update(GameTime gameTime)
         {
-            float moveSpeed = gameTime.ElapsedGameTime.Milliseconds / 500.0f * gameSpeed;
+            float moveSpeed = gameTime.ElapsedGameTime.Milliseconds / 1000.0f * gameSpeed;
             MoveForward(ref xwingPosition, xwingRotation, moveSpeed);
             ProcessKeyboard(gameTime);
 
