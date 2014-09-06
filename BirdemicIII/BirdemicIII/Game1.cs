@@ -13,10 +13,11 @@ using System;
  {
      public class Game1 : Microsoft.Xna.Framework.Game
      {
+         public bool CANDRAW = false;
          GraphicsDeviceManager graphics;
          SpriteBatch spriteBatch;
-         GraphicsDevice device;      
-       
+         GraphicsDevice device;
+         public int ID = -1;
          public Vector3 cameraPosition;
          public Vector3 cameraUpDirection;
 
@@ -29,6 +30,12 @@ using System;
          public Bird bird
          {
              get { return _bird; }
+             set { _bird = value; }
+         }
+         Client client;
+         public Client Client
+         {
+             get { return client; }
          }
 
          environment _env;
@@ -52,13 +59,21 @@ using System;
              Window.Title = "Birdemic III: The Birdemicing";
 
              _env = new environment(this);
-             _bird = new Bird(this);
-
              _env.DrawOrder = 1;
-             _bird.DrawOrder = 2;
+             /*for (int i = 1; i < 50; i++)
+             {     
+                 _bird = new Bird(this, false, i);
+                 _bird.DrawOrder = 50 + i;
+                 Components.Add(_bird);
+             }*/
+             client = new Client(this);
 
-             Components.Add(_bird);
+             //_bird = new Bird(this, true, 0);
+             //_bird.DrawOrder = 2;
+            // Components.Add(_bird);
+    
              Components.Add(_env);
+             Components.Add(client);
  
              base.Initialize();
          }
@@ -81,7 +96,7 @@ using System;
             KeyboardState keys = Keyboard.GetState();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || keys.IsKeyDown(Keys.Escape))
                 this.Exit();
-
+            //Console.WriteLine(bird.Position.Y.ToString());
             base.Update(gameTime);
         }   
  
@@ -92,7 +107,7 @@ using System;
              device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.DarkSlateBlue, 1.0f, 0);
              base.Draw(gameTime);
          }
- 
+    
         
      }
  }
