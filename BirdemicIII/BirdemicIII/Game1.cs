@@ -14,6 +14,10 @@ using System;
      public class Game1 : Microsoft.Xna.Framework.Game
      {
          GraphicsDeviceManager graphics;
+         public GraphicsDeviceManager Graphics
+         {
+             get { return graphics; }
+         }
          SpriteBatch spriteBatch;
          GraphicsDevice device;      
        
@@ -29,6 +33,12 @@ using System;
          public Bird bird
          {
              get { return _bird; }
+         }
+
+         private Person _person;
+         public Person person
+         {
+             get { return _person; }
          }
 
          environment _env;
@@ -51,14 +61,23 @@ using System;
              graphics.ApplyChanges();
              Window.Title = "Birdemic III: The Birdemicing";
 
+             this.IsMouseVisible = false;
+
              _env = new environment(this);
              _bird = new Bird(this);
+             _person = new Person(this);
 
              _env.DrawOrder = 1;
-             _bird.DrawOrder = 2;
+             //_bird.DrawOrder = 2;
+             _person.DrawOrder = 2;
 
-             Components.Add(_bird);
+             //Components.Add(_bird);
+             Components.Add(_person);
              Components.Add(_env);
+
+             MachineGun machine = new MachineGun(this, _person.Position, _person);
+             machine.DrawOrder = 3;
+             machine.Activate();
  
              base.Initialize();
          }
