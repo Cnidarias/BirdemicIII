@@ -47,13 +47,14 @@ namespace BirdemicIII
             
             effect = Game.Content.Load<Effect>("effects");
             bulletTexture = Game.Content.Load<Texture2D>("bullet");
-            xwingModel = LoadModel("xwing");
-            
+            //xwingModel = LoadModel("Cone");
+            xwingModel = Game.Content.Load<Model>("Eagle_flapping");
+
             base.LoadContent();
         }
         public override void Update(GameTime gameTime)
         {
-            float moveSpeed = gameTime.ElapsedGameTime.Milliseconds / 1000.0f * gameSpeed;
+            float moveSpeed = gameTime.ElapsedGameTime.Milliseconds / 750.0f * gameSpeed;
             MoveForward(ref xwingPosition, xwingRotation, moveSpeed);
             ProcessKeyboard(gameTime);
 
@@ -72,7 +73,8 @@ namespace BirdemicIII
         }
         public override void Draw(GameTime gameTime)
         {
-            DrawModel();
+            //DrawModel();
+            drawMddel2();
             DrawBullets();
             base.Draw(gameTime);
         }
@@ -135,7 +137,7 @@ namespace BirdemicIII
         {
             float leftRightRot = 0;
 
-            float turningSpeed = (float)gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
+            float turningSpeed = (float)gameTime.ElapsedGameTime.TotalMilliseconds / 750.0f;
             turningSpeed *= 1.6f * gameSpeed;
             KeyboardState keys = Keyboard.GetState();
             if (keys.IsKeyDown(Keys.Right))
@@ -181,18 +183,40 @@ namespace BirdemicIII
             Vector3 addVector = Vector3.Transform(new Vector3(0, 0, -1), rotationQuat);
             position += addVector * speed;
         }
+        private void drawMddel2()
+        {
+            this.Game.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            this.Game.GraphicsDevice.BlendState = BlendState.Opaque;
+            this.Game.GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
+            Matrix[] transforms = new Matrix[xwingModel.Bones.Count];
+            xwingModel.CopyAbsoluteBoneTransformsTo(transforms);
 
+            foreach (ModelMesh mesh in xwingModel.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.EnableDefaultLighting();
+                    effect.PreferPerPixelLighting = true;
+                    effect.World = Matrix.CreateScale(0.0025f, 0.0025f, 0.0025f) * Matrix.CreateRotationY(MathHelper.Pi) * Matrix.CreateFromQuaternion(xwingRotation) * Matrix.CreateTranslation(xwingPosition);
+                    effect.View = ((Game1)Game).viewMatrix;
+                    effect.Projection = ((Game1)Game).projectionMatrix;
+                }
+                mesh.Draw();
+            }
+        }
         private void DrawModel()
         {
-            Matrix worldMatrix = Matrix.CreateScale(0.0005f, 0.0005f, 0.0005f) * Matrix.CreateRotationY(MathHelper.Pi) * Matrix.CreateFromQuaternion(xwingRotation) * Matrix.CreateTranslation(xwingPosition);
-
+            Matrix worldMatrix = Matrix.CreateScale(0.0025f, 0.0025f, 0.0025f) * Matrix.CreateRotationZ(MathHelper.Pi) * Matrix.CreateFromQuaternion(xwingRotation) * Matrix.CreateTranslation(xwingPosition);
+           // Effect e = new BasicEffect(Game.GraphicsDevice);
             Matrix[] xwingTransforms = new Matrix[xwingModel.Bones.Count];
             xwingModel.CopyAbsoluteBoneTransformsTo(xwingTransforms);
             foreach (ModelMesh mesh in xwingModel.Meshes)
             {
                 foreach (Effect currentEffect in mesh.Effects)
                 {
-                    currentEffect.CurrentTechnique = currentEffect.Techniques["Colored"];
+                    
+                    //currentEffect.CurrentTechnique = e.CurrentTechnique;
+                    currentEffect.CurrentTechnique = currentEffect.Techniques["Textured"];
                     currentEffect.Parameters["xWorld"].SetValue(xwingTransforms[mesh.ParentBone.Index] * worldMatrix);
                     currentEffect.Parameters["xView"].SetValue(((Game1)Game).viewMatrix);
                     currentEffect.Parameters["xProjection"].SetValue(((Game1)Game).projectionMatrix);
