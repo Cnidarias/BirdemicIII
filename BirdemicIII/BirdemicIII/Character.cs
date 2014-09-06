@@ -15,17 +15,11 @@ namespace BirdemicIII
     {
 
         protected int _ID;
-        protected System.Net.IPEndPoint _IP;
 
         public int ID
         {
             get { return _ID; }
             set { _ID = value; }
-        }
-        public System.Net.IPEndPoint IP
-        {
-            get { return _IP; }
-            set { _IP = value; }
         }
 
         protected BoundingSphere _BoundingSphere;

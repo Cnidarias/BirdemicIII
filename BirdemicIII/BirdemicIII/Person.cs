@@ -44,7 +44,8 @@ namespace BirdemicIII
             
             effect = Game.Content.Load<Effect>("effects");
             bulletTexture = Game.Content.Load<Texture2D>("bullet");
-            personModel = LoadModel("xwing");
+            //personModel = LoadModel("Person");
+            personModel = Game.Content.Load<Model>("Person");
             
             base.LoadContent();
         }
@@ -72,7 +73,8 @@ namespace BirdemicIII
         }
         public override void Draw(GameTime gameTime)
         {
-            DrawModel();
+            //DrawModel();
+            drawMddel2();
             DrawBullets();
             base.Draw(gameTime);
         }
@@ -104,7 +106,7 @@ namespace BirdemicIII
             ((Game1)Game).cameraRotation = Quaternion.Lerp(((Game1)Game).cameraRotation, _cameraRotation, 0.1f);
 
             //Vector3 campos = new Vector3(0, 0.1f, 0.6f);
-            Vector3 campos = new Vector3(0, 0.1f, 0.15f);
+            Vector3 campos = new Vector3(0, 0f, 1f);
             campos = Vector3.Transform(campos, Matrix.CreateFromQuaternion(((Game1)Game).cameraRotation));
             campos += _Position;
 
@@ -255,13 +257,35 @@ namespace BirdemicIII
             {
                 foreach (Effect currentEffect in mesh.Effects)
                 {
-                    currentEffect.CurrentTechnique = currentEffect.Techniques["Colored"];
+                    currentEffect.CurrentTechnique = currentEffect.Techniques["Textured"];
                     currentEffect.Parameters["xWorld"].SetValue(xwingTransforms[mesh.ParentBone.Index] * worldMatrix);
                     currentEffect.Parameters["xView"].SetValue(((Game1)Game).viewMatrix);
                     currentEffect.Parameters["xProjection"].SetValue(((Game1)Game).projectionMatrix);
                     currentEffect.Parameters["xEnableLighting"].SetValue(true);
                     currentEffect.Parameters["xLightDirection"].SetValue(lightDirection);
                     currentEffect.Parameters["xAmbient"].SetValue(0.5f);
+                }
+                mesh.Draw();
+            }
+        }
+
+        private void drawMddel2()
+        {
+            this.Game.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            this.Game.GraphicsDevice.BlendState = BlendState.Opaque;
+            this.Game.GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
+            Matrix[] transforms = new Matrix[personModel.Bones.Count];
+            personModel.CopyAbsoluteBoneTransformsTo(transforms);
+
+            foreach (ModelMesh mesh in personModel.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.EnableDefaultLighting();
+                    effect.PreferPerPixelLighting = true;
+                    effect.World = Matrix.CreateScale(0.0025f, 0.0025f, 0.0025f) * Matrix.CreateRotationY(MathHelper.Pi) * Matrix.CreateFromQuaternion(Rotation) * Matrix.CreateTranslation(Position);
+                    effect.View = ((Game1)Game).viewMatrix;
+                    effect.Projection = ((Game1)Game).projectionMatrix;
                 }
                 mesh.Draw();
             }
