@@ -135,7 +135,7 @@ namespace BirdemicIII
             }
 
             if (closestDist != -1)
-                Console.WriteLine("Hit something");
+                Console.WriteLine("Hit a building");
             else
                 Console.WriteLine("No hits");
 
