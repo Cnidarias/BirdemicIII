@@ -13,8 +13,6 @@ using System;
  {
      public class Game1 : Microsoft.Xna.Framework.Game
      {
-         
- 
          GraphicsDeviceManager graphics;
          SpriteBatch spriteBatch;
          GraphicsDevice device;      
