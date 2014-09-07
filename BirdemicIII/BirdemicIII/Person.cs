@@ -14,8 +14,8 @@ namespace BirdemicIII
     public class Person : Character
     {
         public int officialID;
-        bool activePlayer = true;
-        public bool dead;
+        bool activePlayer = false;
+        public bool dead = false;
         public bool haveFired = false, haveKill = false;
         public int haveKilledID = -1;
 
@@ -62,8 +62,8 @@ namespace BirdemicIII
             ID = Id;
             officialID = Id;
             hasFired = shot;
-            _alive = !DEAD;
-            dead = DEAD;
+            _alive = true;
+            dead = false;
             _Position = initPosition;
 
             MachineGun machine = new MachineGun(Game, _Position, this);
@@ -106,7 +106,7 @@ namespace BirdemicIII
             }
             if (activePlayer)
             {
-                haveKill = false;
+                //haveKill = false;
                 float moveSpeed = gameTime.ElapsedGameTime.Milliseconds / 1000.0f * gameSpeed;
                 //MoveForward(ref _Position, _Rotation, moveSpeed);
                 Move(moveSpeed);

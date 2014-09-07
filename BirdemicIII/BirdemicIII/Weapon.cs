@@ -136,10 +136,11 @@ namespace BirdemicIII
                 }
             }
 
-            if (closestDist != -1)
+            /*if (closestDist != -1)
                 Console.WriteLine("Hit a building");
             else
                 Console.WriteLine("No hits");
+             * */
 
             /* find the closest character if there is one closer than the closest building */
 

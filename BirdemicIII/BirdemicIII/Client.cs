@@ -254,14 +254,15 @@ namespace BirdemicIII
                             float Z = msg.ReadFloat();
                             bool tmpShot = msg.ReadBoolean();
                             bool tmpDead = msg.ReadBoolean();
-
+                            Console.WriteLine("THIS IS THE END" + tmpDead.ToString());
+                            humanArr[ID].dead = tmpDead;
+                            humanArr[ID].shot = tmpShot;
                             if (ID == ((Game1)Game).ID && ((Game1)Game).gameState.Equals(Game1.STATE.PERSON))
                                 break;
                             humanArr[ID].X = X;
                             humanArr[ID].Y = Y;
                             humanArr[ID].Z = Z;
-                            humanArr[ID].dead = tmpDead;
-                            humanArr[ID].shot = tmpShot;
+                            
 
                         }
                         if (type == (byte)PacketType.NEWDEAD)
@@ -291,11 +292,12 @@ namespace BirdemicIII
                                         if (((Person)gp).officialID == lID)
                                         {
                                             toBeFkd = gp;
+                                            break;
                                         }
                                     }
                                 }
 
-                                Person p = new Person(((Game1)Game), true, lID, ((Person)toBeFkd).Position, ((Person)toBeFkd).hasFired, !((Person)toBeFkd).alive);
+                                Person p = new Person(((Game1)Game), true, lID, ((Person)toBeFkd).Position, false, true);
                                 p.DrawOrder = 100;
                                 ((Game1)Game).person = p;
                                 ((Game1)Game).Components.Remove(toBeFkd);
