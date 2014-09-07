@@ -21,7 +21,8 @@ namespace BirdemicIII
         {
             LOGIN,
             BIRD,
-            PERSON
+            PERSON,
+            DEAD
         }
         public struct BIRD
         {
@@ -63,9 +64,9 @@ namespace BirdemicIII
 
             NetOutgoingMessage om = client.CreateMessage();
             om.Write((byte)PacketType.LOGIN);
-            //client.Connect("162.222.179.157", 8412, om);
+            client.Connect("162.222.179.157", 8412, om);
             
-            client.Connect("localhost", 8412, om);
+            //client.Connect("localhost", 8412, om);
             bool canStart = false;
             NetIncomingMessage inc;
             while (!canStart)
@@ -128,6 +129,23 @@ namespace BirdemicIII
                 om.Write(((Game1)Game).person.killedID);
                 client.SendMessage(om, NetDeliveryMethod.Unreliable);
             }
+            else if (((Game1)Game).gameState.Equals(Game1.STATE.DEADPERSON))
+            {
+                NetOutgoingMessage om = client.CreateMessage();
+                om.Write((byte)PacketType.DEAD);
+                om.Write((byte)PacketType.PERSON);
+                client.SendMessage(om, NetDeliveryMethod.Unreliable);
+                Thread.Sleep(1000);
+            }
+            else if (((Game1)Game).gameState.Equals(Game1.STATE.DEADBIRD))
+            {
+                NetOutgoingMessage om = client.CreateMessage();
+                om.Write((byte)PacketType.DEAD);
+                om.Write((byte)PacketType.BIRD);
+                client.SendMessage(om, NetDeliveryMethod.Unreliable);
+                ((Game1)Game).gameState = Game1.STATE.BIRD;
+                Thread.Sleep(1000);
+            }
             else
             {
                 NetOutgoingMessage om = client.CreateMessage();
@@ -137,6 +155,7 @@ namespace BirdemicIII
                 om.Write(0);
                 om.Write(0);
                 client.SendMessage(om, NetDeliveryMethod.Unreliable);
+                ((Game1)Game).gameState = Game1.STATE.PERSON;
                 Thread.Sleep(5000);
             }
             
@@ -147,6 +166,7 @@ namespace BirdemicIII
                 {
                     case NetIncomingMessageType.Data:
                         byte type = msg.ReadByte();
+#region LOGIN
                         if (type == (byte)PacketType.LOGIN && logedIn == false)
                         {
                             byte classy = msg.ReadByte();
@@ -189,6 +209,7 @@ namespace BirdemicIII
                             }
                             ((Game1)Game).CANDRAW = true;
                         }
+#endregion
                         if (type == (byte)PacketType.BIRD)
                         {
                             int ID = msg.ReadInt32();
@@ -198,13 +219,85 @@ namespace BirdemicIII
                             float Z = msg.ReadFloat();
                             bool ai = msg.ReadBoolean();
                             bool dead = msg.ReadBoolean();
-                            if (ID == ((Game1)Game).ID)
+                            if (ID == ((Game1)Game).ID && ((Game1)Game).gameState.Equals(Game1.STATE.BIRD))
                                 break;
                             birdArr[ID].X = X;
                             birdArr[ID].Y = Y;
                             birdArr[ID].Z = Z;
                             birdArr[ID].Dead = dead;
                             birdArr[ID].AI = ai;
+                        }
+
+                        if (type == (byte)PacketType.PERSON)
+                        {
+                            int ID = msg.ReadInt32();
+
+                            float X = msg.ReadFloat();
+                            float Y = msg.ReadFloat();
+                            float Z = msg.ReadFloat();
+                            bool tmpShot = msg.ReadBoolean();
+                            bool tmpDead = msg.ReadBoolean();
+
+                            if (ID == ((Game1)Game).ID && ((Game1)Game).gameState.Equals(Game1.STATE.PERSON))
+                                break;
+                            humanArr[ID].X = X;
+                            humanArr[ID].Y = Y;
+                            humanArr[ID].Z = Z;
+                            humanArr[ID].dead = tmpDead;
+                            humanArr[ID].shot = tmpShot;
+
+                        }
+
+                        if (type == (byte)PacketType.DEAD)
+                        {
+                            int lID = msg.ReadInt32();
+                            ((Game1)Game).ID = lID;
+
+                            if (((Game1)Game).gameState.Equals(Game1.STATE.DEADPERSON))
+                            {
+                                GameComponent toBeFkd = null;
+                                foreach (GameComponent gp in ((Game1)Game).Components)
+                                {
+                                    if (gp.GetType() == typeof(Person))
+                                    {
+                                        if (((Person)gp).officialID == lID)
+                                        {
+                                            toBeFkd = gp;
+                                        }
+                                    }
+                                }
+
+                                Person p = new Person(((Game1)Game), true, lID, ((Person)toBeFkd).Position, ((Person)toBeFkd).hasFired, !((Person)toBeFkd).alive);
+                                p.DrawOrder = 100;
+                                ((Game1)Game).Components.Remove(toBeFkd);
+                                ((Game1)Game).Components.Add(p);
+                                ((Game1)Game).gameState = Game1.STATE.PERSON;
+                            }
+                            else
+                            {
+                                GameComponent toBeFkd = null;
+                                foreach (GameComponent gp in ((Game1)Game).Components)
+                                {
+                                    if (gp.GetType() == typeof(Bird))
+                                    {
+                                        int flag = (int)((Bird)gp).officialID;
+
+                                        if (Int32.Equals((int)(((Bird)gp).officialID), lID))
+                                        {
+                                            Console.WriteLine("tjoiahowah");
+                                            toBeFkd = gp;
+                                            break;
+                                        }
+                                    }
+                                }
+                                Bird b = (Bird)toBeFkd;
+
+                                Bird p = new Bird((Game1)Game, true, lID, b.Position, false, false);
+                                p.DrawOrder = 28;
+                                ((Game1)Game).Components.Remove(b);
+                                ((Game1)Game).Components.Add(p);
+                                ((Game1)Game).gameState = Game1.STATE.BIRD;
+                            }
                         }
                                             
                         break;

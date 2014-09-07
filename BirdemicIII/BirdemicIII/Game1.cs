@@ -17,7 +17,9 @@ using System;
          {
              WTF,
              PERSON,
-             BIRD
+             BIRD,
+             DEADBIRD,
+             DEADPERSON
          }
 
          public STATE gameState = STATE.WTF;
@@ -49,6 +51,7 @@ using System;
          Client client;
          public Client Client
          {
+             set { client = value; }
              get { return client; }
          }
 

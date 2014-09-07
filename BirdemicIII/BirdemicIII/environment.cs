@@ -257,7 +257,7 @@ namespace BirdemicIII
 
         public override void Draw(GameTime gameTime)
         {
-            if (((Game1)Game).CANDRAW)
+            if (((Game1)Game).gameState == Game1.STATE.BIRD || ((Game1)Game).gameState == Game1.STATE.PERSON)
             {
                 DrawSkybox();
                 DrawCity();

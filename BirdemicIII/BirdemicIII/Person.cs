@@ -13,6 +13,7 @@ namespace BirdemicIII
 {
     public class Person : Character
     {
+        public int officialID;
         bool activePlayer = true;
         enum CollisionType { None, Building, Boundary, Target }
         float gameSpeed = 1.0f;
@@ -46,6 +47,7 @@ namespace BirdemicIII
         {
             activePlayer = ActivePlayer;
             ID = Id;
+            officialID = Id;
             hasFired = shot;
             _alive = !DEAD;
             _Position = initPosition;

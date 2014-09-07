@@ -89,9 +89,9 @@ namespace BirdemicIII
             Vector3 dir = Vector3.Transform(new Vector3(0, 0, -1), Matrix.CreateFromYawPitchRoll(0, -0.3f, 0) * Matrix.CreateFromQuaternion(owner.cameraRotation));
             float maxError = 0.10f;
             float e1, e2, e3;
-            e1 = ((float)r.NextDouble()) * MathHelper.Pi * maxError;
-            e2 = ((float)r.NextDouble()) * MathHelper.Pi * maxError;
-            e3 = ((float)r.NextDouble()) * MathHelper.Pi * maxError;
+            e1 = ((float)r.NextDouble() - 0.5f) * MathHelper.Pi * maxError;
+            e2 = ((float)r.NextDouble() - 0.5f) * MathHelper.Pi * maxError;
+            e3 = ((float)r.NextDouble() - 0.5f) * MathHelper.Pi * maxError;
 
             Console.WriteLine("Aim Error: " + e1.ToString() + " " + e2.ToString() + " " + e3.ToString());
 

@@ -211,10 +211,14 @@ namespace BirdemicIII
 
             basicEffect.View = ((Game1)Game).viewMatrix;
             basicEffect.Projection = ((Game1)Game).projectionMatrix;
-
+            
             basicEffect.CurrentTechnique.Passes[0].Apply();
             var vertices = new[] { new VertexPositionColor(startPoint, Color.Red), new VertexPositionColor(endPoint, Color.Red) };
-            GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineList, vertices, 0, 1);
+            foreach (EffectPass pass in basicEffect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineList, vertices, 0, 1);
+            }
 
 
             base.Draw(gameTime);

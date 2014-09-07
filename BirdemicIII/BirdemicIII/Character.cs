@@ -14,12 +14,8 @@ namespace BirdemicIII
     public class Character : DrawableGameComponent
     {
 
-        protected int _ID;
-        public int ID
-        {
-            get { return _ID; }
-            set { _ID = value; }
-        }
+        public int ID = 21341;
+        
 
         protected bool _alive = true;
         public bool alive
@@ -72,8 +68,12 @@ namespace BirdemicIII
 
         public override void Update(GameTime gameTime)
         {
+           
             if (_alive == false)
+            {
                 ((Game1)Game).Components.Remove(this);
+                ((Game1)Game).gameState = (((Game1)Game).gameState.Equals(Game1.STATE.PERSON)) ? Game1.STATE.DEADPERSON : Game1.STATE.DEADBIRD;
+            }
             
             base.Update(gameTime);
         }

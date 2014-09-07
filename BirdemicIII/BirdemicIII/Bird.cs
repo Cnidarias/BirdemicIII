@@ -13,7 +13,7 @@ namespace BirdemicIII
 {
     public class Bird : Character
     {
-        int ID;
+        public int officialID;
         bool dead = false;
         bool activePlayer = true;
         enum CollisionType { None, Building, Boundary, Target }
@@ -50,6 +50,7 @@ namespace BirdemicIII
             xwingPosition = pos;
             activePlayer = ActivePlayer;
             ID = Id;
+            officialID = Id;
         }
 
         protected override void LoadContent()
@@ -80,8 +81,9 @@ namespace BirdemicIII
                     ((Game1)Game).Components.Add(billy);
 
                     explosionsound.Play(0.15f, 0.0f, 0.0f);
-                    xwingPosition = new Vector3(8, 1, -3);
-                    xwingRotation = Quaternion.Identity;
+                    _alive = false;
+                    //xwingPosition = new Vector3(8, 1, -3);
+                    //xwingRotation = Quaternion.Identity;
                     //gameSpeed /= 1.1f;
                 }
 
