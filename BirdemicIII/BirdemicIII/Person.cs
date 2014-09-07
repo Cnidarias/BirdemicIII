@@ -37,6 +37,7 @@ namespace BirdemicIII
         float camRotX = 0;
         Effect effect;
         Texture2D bulletTexture;
+        SoundEffect explosionsound;
 
         Weapon _weapon;
         public Weapon weapon
@@ -78,6 +79,7 @@ namespace BirdemicIII
             effect = Game.Content.Load<Effect>("effects");
             bulletTexture = Game.Content.Load<Texture2D>("bullet");
             //personModel = LoadModel("Person");
+            explosionsound = Game.Content.Load<SoundEffect>("explosionsound");
             personModel = Game.Content.Load<Model>("Person");
             
             base.LoadContent();
@@ -92,7 +94,16 @@ namespace BirdemicIII
         {
             _BoundingSphere = new BoundingSphere(_Position + new Vector3(0, 0, 0), 0.35f);
             BS = new BoundingSphere(_Position + new Vector3(0, 0, 0), 0.35f);
+            if (((Game1)Game).Client.HumanArr[officialID].dead)
+            {
+                BillBoarding billy = new BillBoarding((Game1)Game, "explosiontexture", _Position + new Vector3(-.05f, -0.7f, 0), new Vector2(1, 1), new Vector2(10, 1), 100.0f);
+                billy.DrawOrder = 1000;
+                ((Game1)Game).Components.Add(billy);
 
+                explosionsound.Play(0.15f, 0.0f, 0.0f);
+                _alive = false;
+                dead = true;
+            }
             if (activePlayer)
             {
                 haveKill = false;
@@ -102,7 +113,7 @@ namespace BirdemicIII
                 UpdateView();
                 ProcessKeyboard(gameTime);
 
-                Console.WriteLine(BS.ToString());
+                //Console.WriteLine(BS.ToString());
               
 
 

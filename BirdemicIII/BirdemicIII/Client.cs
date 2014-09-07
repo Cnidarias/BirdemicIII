@@ -22,7 +22,8 @@ namespace BirdemicIII
             LOGIN,
             BIRD,
             PERSON,
-            DEAD
+            DEAD,
+            NEWDEAD
         }
         public struct BIRD
         {
@@ -234,13 +235,14 @@ namespace BirdemicIII
                             float Z = msg.ReadFloat();
                             bool ai = msg.ReadBoolean();
                             bool dead = msg.ReadBoolean();
+                            birdArr[ID].Dead = dead;
+                            birdArr[ID].AI = ai;
                             if (ID == ((Game1)Game).ID && ((Game1)Game).gameState.Equals(Game1.STATE.BIRD))
                                 break;
                             birdArr[ID].X = X;
                             birdArr[ID].Y = Y;
                             birdArr[ID].Z = Z;
-                            birdArr[ID].Dead = dead;
-                            birdArr[ID].AI = ai;
+                            
                         }
 
                         if (type == (byte)PacketType.PERSON)
@@ -262,7 +264,17 @@ namespace BirdemicIII
                             humanArr[ID].shot = tmpShot;
 
                         }
+                        if (type == (byte)PacketType.NEWDEAD)
+                        {
+                            byte classy = msg.ReadByte();
+                            int id = msg.ReadInt32();
 
+                            if (classy == (byte)PacketType.BIRD)
+                                birdArr[id].Dead = true;
+                            else
+                                humanArr[id].dead = true;
+
+                        }
                         if (type == (byte)PacketType.DEAD)
                         {
                             Console.WriteLine("yay its me");

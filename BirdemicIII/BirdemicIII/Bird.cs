@@ -18,7 +18,7 @@ namespace BirdemicIII
         bool activePlayer = true;
         enum CollisionType { None, Building, Boundary, Target }
         float gameSpeed = 1.0f;
-        public bool haveKilled = true;
+        public bool haveKilled = false;
         public int haveKilledID = 1;
 
         struct Bullet
@@ -69,6 +69,7 @@ namespace BirdemicIII
         }
         public override void Update(GameTime gameTime)
         {
+            Console.WriteLine(((Game1)Game).Client.BirdArr[0].Dead.ToString());
             if (((Game1)Game).Client.BirdArr[officialID].Dead)
             {
                 BillBoarding billy = new BillBoarding((Game1)Game, "explosiontexture", xwingPosition + new Vector3(-.05f, -0.7f, 0), new Vector2(1, 1), new Vector2(10, 1), 100.0f);
@@ -184,9 +185,7 @@ namespace BirdemicIII
             foreach (GameComponent gc in ((Game1)Game).Components)
             {
                 if (gc.GetType() == typeof(Person))
-                {
-                    if (((Person)gc).BS.Radius > 0)
-                        Console.WriteLine(((Person)gc).BS.ToString());
+                {    
                     if (((Person)gc).BS.Contains(sphere) != ContainmentType.Disjoint)
                     {
                         Console.WriteLine("hit");
