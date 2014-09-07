@@ -28,7 +28,7 @@ namespace BirdemicIII
         protected Vector3 pos;
         protected Quaternion rot;
 
-        Character owner;
+        protected Character owner;
 
         protected Vector3 scale;
         protected Model model;
@@ -110,9 +110,10 @@ namespace BirdemicIII
 
         protected void DetectCollisions()
         {
-            Vector3 dir = Vector3.Transform(new Vector3(0, 0, -1), owner.cameraRotation);
-            Ray r = new Ray(pos, dir);
-            Character closest = null;
+            Vector3 dir = Vector3.Transform(new Vector3(0, 0, -1), Matrix.CreateFromYawPitchRoll(0, -0.3f, 0) * Matrix.CreateFromQuaternion(owner.cameraRotation));
+            //Ray r = new Ray(pos, dir);
+            Ray r = new Ray(owner.Position + new Vector3(0, 0.1f, 0), dir);
+            Bird closest = null;
             float? dist = null;
             float closestDist = -1;
 
@@ -129,7 +130,6 @@ namespace BirdemicIII
                     if (closestDist == -1 || (float)dist < closestDist)
                     {
                         closestDist = (float)dist;
-                        Console.WriteLine("lower");
                     }
                 }
             }
@@ -140,20 +140,29 @@ namespace BirdemicIII
                 Console.WriteLine("No hits");
 
             /* find the closest character if there is one closer than the closest building */
-            /*
-            foreach (Character c in characterList)
+
+            foreach (GameComponent gc in ((Game1)Game).Components)
             {
-                dist = r.Intersects(c.BoundingSphere);
-                if (dist != null)
+                if (gc.GetType() == typeof(Bird))
                 {
-                    if (closestDist == -1 || (float)dist < closestDist)
+                    dist = r.Intersects(((Bird)gc).BoundingSphere);
+                    if (dist != null)
                     {
-                        closestDist = (float)dist;
-                        closest = c;
+                        if (closestDist == -1 || (float)dist < closestDist)
+                        {
+                            closestDist = (float)dist;
+                            closest = (Bird)gc;
+                        }
                     }
                 }
             }
-            */
+            
+            if (closest != null)
+            {
+                owner.hasKill = true;
+                owner.killedID = closest.ID;
+            }
+            
         }
 
 

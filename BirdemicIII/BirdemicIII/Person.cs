@@ -26,10 +26,19 @@ namespace BirdemicIII
         List<Bullet> bulletList = new List<Bullet>();
         double lastBulletTime = 0;
         Model personModel;
-        Vector3 initPosition = new Vector3(8, 0.2f, -3);
+        Vector3 initPosition = new Vector3(8, 0.0f, -3);
         float camRotX = 0;
         Effect effect;
         Texture2D bulletTexture;
+
+        Vector3 scale = new Vector3(0.00025f, 0.00025f, 0.00025f);
+
+        protected bool _hasFired = false;
+        public bool hasFired
+        {
+            get { return _hasFired; }
+            set { _hasFired = value; }
+        }
 
         //Constructor
         public Person(Game game)
@@ -57,7 +66,7 @@ namespace BirdemicIII
             UpdateView();
             ProcessKeyboard(gameTime);
 
-            _BoundingSphere = new BoundingSphere(_Position, 0.04f);
+            _BoundingSphere = new BoundingSphere(_Position + new Vector3(0, 1, 0), 0.35f);
             if (CheckCollision(_BoundingSphere) != CollisionType.None)
             {
                 _Position = initPosition;
@@ -106,14 +115,14 @@ namespace BirdemicIII
             ((Game1)Game).cameraRotation = Quaternion.Lerp(((Game1)Game).cameraRotation, _cameraRotation, 0.1f);
 
             //Vector3 campos = new Vector3(0, 0.1f, 0.6f);
-            Vector3 campos = new Vector3(0, 0f, 1f);
+            Vector3 campos = new Vector3(0, 0.3f, 0.3f);
             campos = Vector3.Transform(campos, Matrix.CreateFromQuaternion(((Game1)Game).cameraRotation));
             campos += _Position;
 
             Vector3 camup = new Vector3(0, 1, 0);
             camup = Vector3.Transform(camup, Matrix.CreateFromQuaternion(((Game1)Game).cameraRotation));
 
-            ((Game1)Game).viewMatrix = Matrix.CreateLookAt(campos, _Position, camup);
+            ((Game1)Game).viewMatrix = Matrix.CreateLookAt(campos, _Position + new Vector3(0, 0.1f, 0), camup);
             ((Game1)Game).projectionMatrix = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, Game.GraphicsDevice.Viewport.AspectRatio, 0.2f, 500.0f);
 
             ((Game1)Game).cameraPosition = campos;
@@ -247,9 +256,11 @@ namespace BirdemicIII
             position += addVector * speed;
         }
 
+        /*
         private void DrawModel()
         {
-            Matrix worldMatrix = Matrix.CreateScale(0.0005f, 0.0005f, 0.0005f) * Matrix.CreateRotationY(MathHelper.Pi) * Matrix.CreateFromQuaternion(_Rotation) * Matrix.CreateTranslation(_Position);
+            //Matrix worldMatrix = Matrix.CreateScale(0.0005f, 0.0005f, 0.0005f) * Matrix.CreateRotationY(MathHelper.Pi) * Matrix.CreateFromQuaternion(_Rotation) * Matrix.CreateTranslation(_Position);
+            Matrix worldMatrix = Matrix.CreateScale(0.000005f, 0.000005f, 0.000005f) * Matrix.CreateRotationY(MathHelper.Pi) * Matrix.CreateFromQuaternion(_Rotation) * Matrix.CreateTranslation(_Position);
 
             Matrix[] xwingTransforms = new Matrix[personModel.Bones.Count];
             personModel.CopyAbsoluteBoneTransformsTo(xwingTransforms);
@@ -268,6 +279,7 @@ namespace BirdemicIII
                 mesh.Draw();
             }
         }
+        */
 
         private void drawMddel2()
         {
@@ -283,7 +295,8 @@ namespace BirdemicIII
                 {
                     effect.EnableDefaultLighting();
                     effect.PreferPerPixelLighting = true;
-                    effect.World = Matrix.CreateScale(0.0025f, 0.0025f, 0.0025f) * Matrix.CreateRotationY(MathHelper.Pi) * Matrix.CreateFromQuaternion(Rotation) * Matrix.CreateTranslation(Position);
+                    //effect.World = Matrix.CreateScale(0.0025f, 0.0025f, 0.0025f) * Matrix.CreateRotationY(MathHelper.Pi) * Matrix.CreateFromQuaternion(Rotation) * Matrix.CreateTranslation(Position);
+                    effect.World = Matrix.CreateScale(scale) * Matrix.CreateRotationY(MathHelper.PiOver2 + 0.45f) * Matrix.CreateFromQuaternion(Rotation) * Matrix.CreateTranslation(Position);
                     effect.View = ((Game1)Game).viewMatrix;
                     effect.Projection = ((Game1)Game).projectionMatrix;
                 }

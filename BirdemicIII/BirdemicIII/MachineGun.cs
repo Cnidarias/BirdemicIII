@@ -18,8 +18,8 @@ namespace BirdemicIII
             : base(game, "M16", pos, Quaternion.Identity, 50, 2000, 10, 10000, true, 999, 100, 1000, 100, owner)
         {
             //carryPos = new Vector3(0.1f, 0, -0.35f);
-            carryPos = new Vector3(0.1f, -0.1f, -0.35f);
-            carryRot = Quaternion.CreateFromYawPitchRoll(-MathHelper.PiOver2 + 0.1f, 0.1f, 0);
+            carryPos = new Vector3(0.03f, 0.105f, -0.1f);
+            carryRot = Quaternion.CreateFromYawPitchRoll(-MathHelper.PiOver2 + 0.1f, 0.0f, 0.1f);
         }
     }
 }

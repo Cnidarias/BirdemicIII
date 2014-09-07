@@ -83,6 +83,8 @@ namespace BirdemicIII
             Vector3 pos;
             Vector3 normal;
 
+            ((Person)owner).hasFired = true;
+
             DetectCollisions();
         }
 
