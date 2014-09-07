@@ -104,7 +104,7 @@ namespace BirdemicIII
 
             dir = Vector3.Transform(dir, Matrix.CreateFromYawPitchRoll(e1, e2, e3));
 
-            DetectCollisions(dir);
+            DetectCollisions(dir, 1f);
         }
 
         void ReloadMag()
