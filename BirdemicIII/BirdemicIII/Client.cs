@@ -30,13 +30,27 @@ namespace BirdemicIII
             public bool AI, Dead;
             public System.Net.IPEndPoint IP;
         }
+        public struct HUMAN
+        {
+            public int ID;
+            public float X, Y, Z;
+            public bool shot, dead;
+        }
+
         NetClient client;
         bool logedIn = false;
+
         BIRD[] birdArr = new BIRD[50];
         public BIRD[] BirdArr
         {
             get { return birdArr; }
         }
+        HUMAN[] humanArr = new HUMAN[25];
+        public HUMAN[] HumanArr
+        {
+            get { return humanArr; }
+        }
+
 
         public Client(Game game)
             : base(game)
@@ -87,7 +101,7 @@ namespace BirdemicIII
         }
         public override void Update(GameTime gameTime)
         {
-            if (((Game1)Game).bird != null)
+            if (((Game1)Game).gameState == Game1.STATE.BIRD)
             {
                 NetOutgoingMessage om = client.CreateMessage();
                 om.Write((byte)PacketType.BIRD);
@@ -95,6 +109,23 @@ namespace BirdemicIII
                 om.Write(((Game1)Game).bird.Position.X);
                 om.Write(((Game1)Game).bird.Position.Y);
                 om.Write(((Game1)Game).bird.Position.Z);
+                om.Write(((Game1)Game).bird.alive);
+                om.Write(((Game1)Game).bird.hasKill);
+                om.Write(((Game1)Game).bird.killedID);
+                client.SendMessage(om, NetDeliveryMethod.Unreliable);
+            }
+            if (((Game1)Game).gameState == Game1.STATE.PERSON)
+            {
+                NetOutgoingMessage om = client.CreateMessage();
+                om.Write((byte)PacketType.PERSON);
+                om.Write(((Game1)Game).ID);
+                om.Write(((Game1)Game).person.Position.X);
+                om.Write(((Game1)Game).person.Position.Y);
+                om.Write(((Game1)Game).person.Position.Z);
+                om.Write(((Game1)Game).person.alive);
+                om.Write(((Game1)Game).person.hasFired);
+                om.Write(((Game1)Game).person.hasKill);
+                om.Write(((Game1)Game).person.killedID);
                 client.SendMessage(om, NetDeliveryMethod.Unreliable);
             }
             else
@@ -118,6 +149,8 @@ namespace BirdemicIII
                         byte type = msg.ReadByte();
                         if (type == (byte)PacketType.LOGIN && logedIn == false)
                         {
+                            byte classy = msg.ReadByte();
+                            ((Game1)Game).gameState = (classy == (byte)PacketType.PERSON) ? Game1.STATE.PERSON : Game1.STATE.BIRD;
                             logedIn = true;
                             Console.WriteLine("iawd");
                             int lID = msg.ReadInt32();
@@ -126,15 +159,21 @@ namespace BirdemicIII
                             Console.WriteLine("size = " + s.ToString());
                             for (int i = 0; i < s; i++)
                             {
-                                Bird bird = new Bird((Game1)Game, (lID == msg.ReadInt32()) ? true : false, i, new Vector3(msg.ReadFloat(), msg.ReadFloat(), msg.ReadFloat()), msg.ReadBoolean(), msg.ReadBoolean());
+                                Bird bird = new Bird((Game1)Game, (lID == msg.ReadInt32() && ((Game1)Game).gameState == Game1.STATE.BIRD) ? true : false, i, new Vector3(msg.ReadFloat(), msg.ReadFloat(), msg.ReadFloat()), msg.ReadBoolean(), msg.ReadBoolean());
                                 bird.DrawOrder = 20 + i;
                                 Console.WriteLine(lID.ToString());
-                                if (i == ((Game1)Game).ID)
+                                if (i == ((Game1)Game).ID && ((Game1)Game).gameState == Game1.STATE.BIRD)
                                 {
                                     ((Game1)Game).bird = bird;
                                 }
                                 ((Game1)Game).Components.Add(bird);
                                 
+                            }
+                            s = msg.ReadInt32();
+                            Console.WriteLine("size = " + s.ToString());
+                            for (int i = 0; i < s; i++)
+                            {
+                                //Person person = new Person(
                             }
                             ((Game1)Game).CANDRAW = true;
                         }

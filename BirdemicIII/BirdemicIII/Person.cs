@@ -13,7 +13,7 @@ namespace BirdemicIII
 {
     public class Person : Character
     {
-
+        bool activePlayer = true;
         enum CollisionType { None, Building, Boundary, Target }
         float gameSpeed = 1.0f;
         struct Bullet
@@ -41,9 +41,10 @@ namespace BirdemicIII
         }
 
         //Constructor
-        public Person(Game game)
+        public Person(Game game, bool ActivePlayer, int Id, Vector3 pos, bool DEAD)
             : base(game)
         {
+            _alive = !DEAD;
             _Position = initPosition;
         }
 
@@ -60,24 +61,39 @@ namespace BirdemicIII
         }
         public override void Update(GameTime gameTime)
         {
-            float moveSpeed = gameTime.ElapsedGameTime.Milliseconds / 1000.0f * gameSpeed;
-            //MoveForward(ref _Position, _Rotation, moveSpeed);
-            Move(moveSpeed);
-            UpdateView();
-            ProcessKeyboard(gameTime);
-
-            _BoundingSphere = new BoundingSphere(_Position + new Vector3(0, 1, 0), 0.35f);
-            if (CheckCollision(_BoundingSphere) != CollisionType.None)
+            if (activePlayer)
             {
-                _Position = initPosition;
-                _Rotation = Quaternion.Identity;
-                camRotX = 0;
-                //gameSpeed /= 1.1f;
+                float moveSpeed = gameTime.ElapsedGameTime.Milliseconds / 1000.0f * gameSpeed;
+                //MoveForward(ref _Position, _Rotation, moveSpeed);
+                Move(moveSpeed);
+                UpdateView();
+                ProcessKeyboard(gameTime);
+
+                _BoundingSphere = new BoundingSphere(_Position + new Vector3(0, 1, 0), 0.35f);
+                if (CheckCollision(_BoundingSphere) != CollisionType.None)
+                {
+                    _Position = initPosition;
+                    _Rotation = Quaternion.Identity;
+                    camRotX = 0;
+                    //gameSpeed /= 1.1f;
+                }
+
+
+                UpdateCamera();
+                UpdateBulletPositions(moveSpeed);
             }
+            else
+            {
+                Game1 g = ((Game1)Game);
+                if (!g.Client.HumanArr[ID].dead)
+                {
+                    _Position.X = g.Client.HumanArr[ID].X;
+                    _Position.Y = g.Client.HumanArr[ID].Y;
+                    _Position.Z = g.Client.HumanArr[ID].Z;
 
-
-            UpdateCamera();
-            UpdateBulletPositions(moveSpeed);
+                    _alive = !g.Client.BirdArr[ID].Dead;
+                }
+            }
             base.Update(gameTime);
         }
         public override void Draw(GameTime gameTime)

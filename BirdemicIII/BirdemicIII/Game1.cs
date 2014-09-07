@@ -13,6 +13,16 @@ using System;
  {
      public class Game1 : Microsoft.Xna.Framework.Game
      {
+         public static enum STATE
+         {
+             WTF,
+             PERSON,
+             BIRD
+         }
+
+         public STATE gameState = STATE.WTF;
+
+
          public bool CANDRAW = false;
          GraphicsDeviceManager graphics;
          public GraphicsDeviceManager Graphics
