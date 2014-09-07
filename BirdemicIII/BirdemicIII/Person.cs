@@ -46,6 +46,10 @@ namespace BirdemicIII
         {
             _alive = !DEAD;
             _Position = initPosition;
+
+            MachineGun machine = new MachineGun(Game, _Position, this);
+            machine.DrawOrder = 3;
+            machine.Activate();
         }
 
         protected override void LoadContent()

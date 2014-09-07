@@ -98,10 +98,6 @@ using System;
 
              Components.Add(_env);
 
-             /*MachineGun machine = new MachineGun(this, _person.Position, _person);
-             machine.DrawOrder = 3;
-             machine.Activate();*/
-
              client = new Client(this);
 
              Components.Add(client);
