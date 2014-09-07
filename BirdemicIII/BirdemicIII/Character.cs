@@ -64,7 +64,6 @@ namespace BirdemicIII
         public Character(Game game)
             : base(game)
         {
-           // BoundingSphereRenderer.InitializeGraphics(this.GraphicsDevice, 5);
             
         }
 

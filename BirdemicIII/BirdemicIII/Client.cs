@@ -114,7 +114,7 @@ namespace BirdemicIII
                 if (((Game1)Game).bird.hasKill == true)
                     Console.WriteLine("HAS KILLA TRUE");
                 if (((Game1)Game).bird.haveKilled == true)
-                    Console.WriteLine("HAVE:w KILLA TRUE");
+                    Console.WriteLine("HAVE: KILLA TRUE");
 
                 NetOutgoingMessage om = client.CreateMessage();
                 om.Write((byte)PacketType.BIRD);

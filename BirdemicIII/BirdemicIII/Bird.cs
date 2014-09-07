@@ -69,6 +69,16 @@ namespace BirdemicIII
         }
         public override void Update(GameTime gameTime)
         {
+            if (((Game1)Game).Client.BirdArr[officialID].Dead)
+            {
+                BillBoarding billy = new BillBoarding((Game1)Game, "explosiontexture", xwingPosition + new Vector3(-.05f, -0.7f, 0), new Vector2(1, 1), new Vector2(10, 1), 100.0f);
+                billy.DrawOrder = 1000;
+                ((Game1)Game).Components.Add(billy);
+
+                explosionsound.Play(0.15f, 0.0f, 0.0f);
+                _alive = false;
+                dead = true;
+            }
             if (activePlayer)
             {
                 haveKilled = false;
@@ -77,7 +87,7 @@ namespace BirdemicIII
                 ProcessKeyboard(gameTime);
 
                 BoundingSphere xwingSpere = new BoundingSphere(xwingPosition, 0.04f);
-                if (CheckCollision(xwingSpere) != CollisionType.None)
+                if (CheckCollision(xwingSpere) != CollisionType.None || ((Game1)Game).Client.BirdArr[officialID].Dead)
                 {
                     BillBoarding billy = new BillBoarding((Game1)Game, "explosiontexture", xwingPosition + new Vector3(-.05f, -0.7f, 0), new Vector2(1, 1), new Vector2(10, 1), 100.0f);
                     billy.DrawOrder = 1000;

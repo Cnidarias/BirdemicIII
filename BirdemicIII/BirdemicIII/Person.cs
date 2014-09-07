@@ -103,13 +103,7 @@ namespace BirdemicIII
                 ProcessKeyboard(gameTime);
 
                 Console.WriteLine(BS.ToString());
-                //if (CheckCollision(_BoundingSphere) != CollisionType.None)
-                //{
-                //    _Position = initPosition;
-                //    _Rotation = Quaternion.Identity;
-                //    camRotX = 0;
-                //    //gameSpeed /= 1.1f;
-                //}
+              
 
 
                 UpdateCamera();
@@ -306,31 +300,6 @@ namespace BirdemicIII
             Vector3 addVector = Vector3.Transform(new Vector3(0, 0, -1), rotationQuat);
             position += addVector * speed;
         }
-
-        /*
-        private void DrawModel()
-        {
-            //Matrix worldMatrix = Matrix.CreateScale(0.0005f, 0.0005f, 0.0005f) * Matrix.CreateRotationY(MathHelper.Pi) * Matrix.CreateFromQuaternion(_Rotation) * Matrix.CreateTranslation(_Position);
-            Matrix worldMatrix = Matrix.CreateScale(0.000005f, 0.000005f, 0.000005f) * Matrix.CreateRotationY(MathHelper.Pi) * Matrix.CreateFromQuaternion(_Rotation) * Matrix.CreateTranslation(_Position);
-
-            Matrix[] xwingTransforms = new Matrix[personModel.Bones.Count];
-            personModel.CopyAbsoluteBoneTransformsTo(xwingTransforms);
-            foreach (ModelMesh mesh in personModel.Meshes)
-            {
-                foreach (Effect currentEffect in mesh.Effects)
-                {
-                    currentEffect.CurrentTechnique = currentEffect.Techniques["Textured"];
-                    currentEffect.Parameters["xWorld"].SetValue(xwingTransforms[mesh.ParentBone.Index] * worldMatrix);
-                    currentEffect.Parameters["xView"].SetValue(((Game1)Game).viewMatrix);
-                    currentEffect.Parameters["xProjection"].SetValue(((Game1)Game).projectionMatrix);
-                    currentEffect.Parameters["xEnableLighting"].SetValue(true);
-                    currentEffect.Parameters["xLightDirection"].SetValue(lightDirection);
-                    currentEffect.Parameters["xAmbient"].SetValue(0.5f);
-                }
-                mesh.Draw();
-            }
-        }
-        */
 
         private void drawMddel2()
         {
