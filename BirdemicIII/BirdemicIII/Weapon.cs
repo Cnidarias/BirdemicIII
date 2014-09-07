@@ -108,9 +108,8 @@ namespace BirdemicIII
         private Vector3 endPoint = new Vector3(0, 0, -50);
 
 
-        protected void DetectCollisions()
+        protected void DetectCollisions(Vector3 dir)
         {
-            Vector3 dir = Vector3.Transform(new Vector3(0, 0, -1), Matrix.CreateFromYawPitchRoll(0, -0.3f, 0) * Matrix.CreateFromQuaternion(owner.cameraRotation));
             //Ray r = new Ray(pos, dir);
             Ray r = new Ray(owner.Position + new Vector3(0, 0.1f, 0), dir);
             Bird closest = null;

@@ -77,7 +77,7 @@ namespace BirdemicIII
             magCur--;
             curAmmo--;
 
-            //Console.WriteLine(magCur.ToString() + "/" + curAmmo.ToString());
+            Console.WriteLine(magCur.ToString() + "/" + curAmmo.ToString());
 
             float dist;
             Vector3 pos;
@@ -85,7 +85,19 @@ namespace BirdemicIII
 
             ((Person)owner).hasFired = true;
 
-            DetectCollisions();
+            Random r = new Random();
+            Vector3 dir = Vector3.Transform(new Vector3(0, 0, -1), Matrix.CreateFromYawPitchRoll(0, -0.3f, 0) * Matrix.CreateFromQuaternion(owner.cameraRotation));
+            float maxError = 0.10f;
+            float e1, e2, e3;
+            e1 = ((float)r.NextDouble()) * MathHelper.Pi * maxError;
+            e2 = ((float)r.NextDouble()) * MathHelper.Pi * maxError;
+            e3 = ((float)r.NextDouble()) * MathHelper.Pi * maxError;
+
+            Console.WriteLine("Aim Error: " + e1.ToString() + " " + e2.ToString() + " " + e3.ToString());
+
+            dir = Vector3.Transform(dir, Matrix.CreateFromYawPitchRoll(e1, e2, e3));
+
+            DetectCollisions(dir);
         }
 
         void ReloadMag()
