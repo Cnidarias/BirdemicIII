@@ -72,17 +72,17 @@ using System;
 
              _env = new environment(this);
 
-             _person = new Person(this);
+             //_person = new Person(this);
 
              _env.DrawOrder = 1;
-             _person.DrawOrder = 2;
+             //_person.DrawOrder = 2;
 
-             Components.Add(_person);
+             //Components.Add(_person);
              Components.Add(_env);
 
-             MachineGun machine = new MachineGun(this, _person.Position, _person);
+             /*MachineGun machine = new MachineGun(this, _person.Position, _person);
              machine.DrawOrder = 3;
-             machine.Activate();
+             machine.Activate();*/
 
              client = new Client(this);
 
