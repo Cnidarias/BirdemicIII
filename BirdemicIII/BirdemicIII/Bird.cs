@@ -40,6 +40,7 @@ namespace BirdemicIII
         Quaternion xwingRotation = Quaternion.Identity;
         Effect effect;
         Texture2D bulletTexture;
+        SoundEffect explosionsound;
 
         //Constructor
         public Bird(Game game, bool ActivePlayer, int Id, Vector3 pos, bool AI, bool DEAD)
@@ -59,6 +60,7 @@ namespace BirdemicIII
             bulletTexture = Game.Content.Load<Texture2D>("bullet");
             //xwingModel = LoadModel("Cone");
             xwingModel = Game.Content.Load<Model>("Eagle_flapping");
+            explosionsound = Game.Content.Load<SoundEffect>("explosionsound");
 
             base.LoadContent();
         }
@@ -73,9 +75,14 @@ namespace BirdemicIII
                 BoundingSphere xwingSpere = new BoundingSphere(xwingPosition, 0.04f);
                 if (CheckCollision(xwingSpere) != CollisionType.None)
                 {
+                    BillBoarding billy = new BillBoarding((Game1)Game, "explosiontexture", xwingPosition + new Vector3(-.05f, -0.7f, 0), new Vector2(1, 1), new Vector2(10, 1), 100.0f);
+                    billy.DrawOrder = 100000;
+                    ((Game1)Game).Components.Add(billy);
+
+                    explosionsound.Play(0.15f, 0.0f, 0.0f);
                     xwingPosition = new Vector3(8, 1, -3);
                     xwingRotation = Quaternion.Identity;
-                    gameSpeed /= 1.1f;
+                    //gameSpeed /= 1.1f;
                 }
 
                 UpdateCamera();

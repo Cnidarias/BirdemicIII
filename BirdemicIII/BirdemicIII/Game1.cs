@@ -101,6 +101,11 @@ using System;
  
          protected override void LoadContent()
          {
+             Song song = Content.Load<Song>("ilikebirds");
+             MediaPlayer.Play(song);
+             MediaPlayer.IsRepeating = true;
+             MediaPlayer.Volume = 0.25f;
+
              spriteBatch = new SpriteBatch(GraphicsDevice);
              
              device = graphics.GraphicsDevice;
