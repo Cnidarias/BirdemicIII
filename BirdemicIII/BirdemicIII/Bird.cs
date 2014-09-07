@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace BirdemicIII
 {
-    public class Bird : DrawableGameComponent
+    public class Bird : Character
     {
         int ID;
         bool dead = false;
@@ -156,7 +156,19 @@ namespace BirdemicIII
 
             if (((Game1)Game).Env.CompleteCityBox.Contains(sphere) != ContainmentType.Contains)
                 return CollisionType.Boundary;
-            
+
+            foreach (GameComponent gc in ((Game1)Game).Components)
+            {
+                if (gc.GetType() == typeof(Person))
+                {
+                    if (((Person)gc).BoundingSphere.Contains(sphere) != ContainmentType.Disjoint)
+                    {
+                        _hasKill = true;
+                        _killedID = ((Person)gc).ID;
+                        break;
+                    }
+                }
+            }
            
             return CollisionType.None;
         }

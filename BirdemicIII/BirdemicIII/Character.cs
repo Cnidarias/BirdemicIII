@@ -15,11 +15,31 @@ namespace BirdemicIII
     {
 
         protected int _ID;
-
         public int ID
         {
             get { return _ID; }
             set { _ID = value; }
+        }
+
+        protected bool _alive = true;
+        public bool alive
+        {
+            get { return _alive; }
+            set { _alive = value; }
+        }
+
+        protected bool _hasKill;
+        public bool hasKill
+        {
+            get { return _hasKill; }
+            set { _hasKill = value; }
+        }
+
+        protected int _killedID;
+        public int killedID
+        {
+            get { return _killedID; }
+            set { _killedID = value; }
         }
 
         protected BoundingSphere _BoundingSphere;
