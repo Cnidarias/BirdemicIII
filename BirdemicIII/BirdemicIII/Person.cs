@@ -15,6 +15,10 @@ namespace BirdemicIII
     {
         public int officialID;
         bool activePlayer = false;
+        public bool ActivePlayer
+        {
+            get { return activePlayer; }
+        }
         public bool dead = false;
         public bool haveFired = false, haveKill = false;
         public int haveKilledID = -1;
@@ -64,6 +68,7 @@ namespace BirdemicIII
             Hanger hanger = new Hanger(Game, _Position, this);
             machine.DrawOrder = 3;
             hanger.DrawOrder = 3;
+            _weapons = new List<Weapon>();
             _weapons.Add(machine);
             _weapons.Add(hanger);
             machine.Activate();

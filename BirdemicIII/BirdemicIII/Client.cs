@@ -254,7 +254,7 @@ namespace BirdemicIII
                             float Z = msg.ReadFloat();
                             bool tmpShot = msg.ReadBoolean();
                             bool tmpDead = msg.ReadBoolean();
-                            Console.WriteLine("THIS IS THE END" + tmpDead.ToString());
+                            //Console.WriteLine("THIS IS THE END" + tmpDead.ToString());
                             humanArr[ID].dead = tmpDead;
                             humanArr[ID].shot = tmpShot;
                             if (ID == ((Game1)Game).ID && ((Game1)Game).gameState.Equals(Game1.STATE.PERSON))

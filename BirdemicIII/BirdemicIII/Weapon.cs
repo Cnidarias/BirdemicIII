@@ -73,20 +73,23 @@ namespace BirdemicIII
 
             lastFireDelta += elapsedTime;
 
-            MouseState mouse = Mouse.GetState();
-            if (mouse.LeftButton == ButtonState.Pressed)
+            if (((Person)owner).ActivePlayer)
             {
-                if ((automatic || lastLeftState == ButtonState.Released) && lastFireDelta > fireDelta && CanFire())
+                MouseState mouse = Mouse.GetState();
+                if (mouse.LeftButton == ButtonState.Pressed)
                 {
-                    if(((Game1)Game).person != null)
-                        ((Game1)Game).person.haveFired = true;
-                    lastFireDelta = 0;
-                    Fire();
+                    if ((automatic || lastLeftState == ButtonState.Released) && lastFireDelta > fireDelta && CanFire())
+                    {
+                        if (((Game1)Game).person != null)
+                            ((Game1)Game).person.haveFired = true;
+                        lastFireDelta = 0;
+                        Fire();
+                    }
+                    //Console.WriteLine("Fire");
                 }
-                //Console.WriteLine("Fire");
-            }
 
-            lastLeftState = mouse.LeftButton;
+                lastLeftState = mouse.LeftButton;
+            }
         }
 
         public void Activate()

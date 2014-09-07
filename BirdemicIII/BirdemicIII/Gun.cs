@@ -74,30 +74,33 @@ namespace BirdemicIII
 
         protected override void Fire()
         {
-            magCur--;
-            curAmmo--;
+            if (((Person)owner).ActivePlayer)
+            {
+                magCur--;
+                curAmmo--;
 
-            Console.WriteLine(magCur.ToString() + "/" + curAmmo.ToString());
+                Console.WriteLine(magCur.ToString() + "/" + curAmmo.ToString());
 
-            float dist;
-            Vector3 pos;
-            Vector3 normal;
+                float dist;
+                Vector3 pos;
+                Vector3 normal;
 
-            ((Person)owner).hasFired = true;
+                ((Person)owner).hasFired = true;
 
-            Random r = new Random();
-            Vector3 dir = Vector3.Transform(new Vector3(0, 0, -1), Matrix.CreateFromYawPitchRoll(0, -0.3f, 0) * Matrix.CreateFromQuaternion(owner.cameraRotation));
-            float maxError = 0.05f;
-            float e1, e2, e3;
-            e1 = ((float)r.NextDouble() - 0.5f) * MathHelper.Pi * maxError;
-            e2 = ((float)r.NextDouble() - 0.5f) * MathHelper.Pi * maxError;
-            e3 = ((float)r.NextDouble() - 0.5f) * MathHelper.Pi * maxError;
+                Random r = new Random();
+                Vector3 dir = Vector3.Transform(new Vector3(0, 0, -1), Matrix.CreateFromYawPitchRoll(0, -0.3f, 0) * Matrix.CreateFromQuaternion(owner.cameraRotation));
+                float maxError = 0.00f;
+                float e1, e2, e3;
+                e1 = ((float)r.NextDouble() - 0.5f) * MathHelper.Pi * maxError;
+                e2 = ((float)r.NextDouble() - 0.5f) * MathHelper.Pi * maxError;
+                e3 = ((float)r.NextDouble() - 0.5f) * MathHelper.Pi * maxError;
 
-            Console.WriteLine("Aim Error: " + e1.ToString() + " " + e2.ToString() + " " + e3.ToString());
+                Console.WriteLine("Aim Error: " + e1.ToString() + " " + e2.ToString() + " " + e3.ToString());
 
-            dir = Vector3.Transform(dir, Matrix.CreateFromYawPitchRoll(e1, e2, e3));
+                dir = Vector3.Transform(dir, Matrix.CreateFromYawPitchRoll(e1, e2, e3));
 
-            DetectCollisions(dir);
+                DetectCollisions(dir);
+            }
         }
 
         void ReloadMag()
