@@ -71,12 +71,21 @@ namespace BirdemicIII
            
             if (_alive == false)
             {
-
-                ((Game1)Game).gameState = (((Game1)Game).gameState.Equals(Game1.STATE.PERSON)) ? Game1.STATE.DEADPERSON : Game1.STATE.DEADBIRD;
+                if (ID == ((Game1)Game).ID)
+                {
+                    if ((this.GetType() == typeof(Bird) && ((Game1)Game).gameState.Equals(Game1.STATE.BIRD)) || (this.GetType() == typeof(Person) && ((Game1)Game).gameState.Equals(Game1.STATE.PERSON)))
+                    {
+                        ((Game1)Game).gameState = (((Game1)Game).gameState.Equals(Game1.STATE.PERSON)) ? Game1.STATE.DEADPERSON : Game1.STATE.DEADBIRD;
+                        ((Game1)Game).person = null;
+                        ((Game1)Game).bird = null;
+                    }
+                }
 
                 if (this.GetType() == typeof(Person))
                     ((Person)this).weapon.Deactivate();
                 ((Game1)Game).Components.Remove(this);
+                
+                
             }
             
             base.Update(gameTime);

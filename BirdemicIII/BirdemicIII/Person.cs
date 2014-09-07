@@ -15,6 +15,10 @@ namespace BirdemicIII
     {
         public int officialID;
         bool activePlayer = true;
+        public bool dead;
+        public bool haveFired = false, haveKill = false;
+        public int haveKilledID = -1;
+
         enum CollisionType { None, Building, Boundary, Target }
         float gameSpeed = 1.0f;
         struct Bullet
@@ -56,6 +60,7 @@ namespace BirdemicIII
             officialID = Id;
             hasFired = shot;
             _alive = !DEAD;
+            dead = DEAD;
             _Position = initPosition;
 
             MachineGun machine = new MachineGun(Game, _Position, this);
@@ -79,6 +84,7 @@ namespace BirdemicIII
         {
             if (activePlayer)
             {
+                haveKill = false;
                 float moveSpeed = gameTime.ElapsedGameTime.Milliseconds / 1000.0f * gameSpeed;
                 //MoveForward(ref _Position, _Rotation, moveSpeed);
                 Move(moveSpeed);
@@ -107,7 +113,8 @@ namespace BirdemicIII
                     _Position.Y = g.Client.HumanArr[ID].Y;
                     _Position.Z = g.Client.HumanArr[ID].Z;
 
-                    _alive = !g.Client.BirdArr[ID].Dead;
+                    _alive = !g.Client.HumanArr[ID].dead;
+                    dead = !g.Client.HumanArr[ID].dead;
                 }
             }
             base.Update(gameTime);

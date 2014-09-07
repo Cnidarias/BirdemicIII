@@ -29,6 +29,7 @@ namespace BirdemicIII
         protected Quaternion rot;
 
         protected Character owner;
+        
 
         protected Vector3 scale;
         protected Model model;
@@ -77,6 +78,8 @@ namespace BirdemicIII
             {
                 if ((automatic || lastLeftState == ButtonState.Released) && lastFireDelta > fireDelta && CanFire())
                 {
+                    if(((Game1)Game).person != null)
+                        ((Game1)Game).person.haveFired = true;
                     lastFireDelta = 0;
                     Fire();
                 }
@@ -158,8 +161,13 @@ namespace BirdemicIII
             
             if (closest != null)
             {
-                owner.hasKill = true;
-                owner.killedID = closest.ID;
+                if (((Game1)Game).person != null)
+                {
+                    owner.hasKill = true;
+                    owner.killedID = closest.ID;
+                    ((Game1)Game).person.haveKill = true;
+                    ((Game1)Game).person.haveKilledID = closest.officialID;
+                }
             }
             
         }

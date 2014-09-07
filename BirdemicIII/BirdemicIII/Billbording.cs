@@ -133,9 +133,9 @@ namespace BirdemicIII
         {
             bbEffect.CurrentTechnique = bbEffect.Techniques["CylBillboard"];
             bbEffect.Parameters["xWorld"].SetValue(Matrix.Identity);
-            bbEffect.Parameters["xView"].SetValue(((Game1)this.Game).viewMatrix);
-            bbEffect.Parameters["xProjection"].SetValue(((Game1)this.Game).projectionMatrix);
-            bbEffect.Parameters["xCamPos"].SetValue(((Game1)this.Game).cameraPosition);
+            bbEffect.Parameters["xView"].SetValue(((Game1)Game).viewMatrix);
+            bbEffect.Parameters["xProjection"].SetValue(((Game1)Game).projectionMatrix);
+            bbEffect.Parameters["xCamPos"].SetValue(((Game1)Game).cameraPosition);
             bbEffect.Parameters["xAllowedRotDir"].SetValue(rot);
             bbEffect.Parameters["xBillboardTexture"].SetValue(_tex);
 
@@ -145,6 +145,8 @@ namespace BirdemicIII
             {
                 pass.Apply();
                 Game.GraphicsDevice.BlendState = BlendState.AlphaBlend;
+                Game.GraphicsDevice.DepthStencilState = DepthStencilState.None;
+                
                 Game.GraphicsDevice.SetVertexBuffer(billBuf);
 
                 Game.GraphicsDevice.DrawUserPrimitives<VertexPositionTexture>(Microsoft.Xna.Framework.Graphics.PrimitiveType.TriangleList, _billVerticies, 0, 2, VertexPositionTexture.VertexDeclaration);

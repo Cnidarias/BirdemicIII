@@ -130,7 +130,7 @@ using System;
  
          protected override void Draw(GameTime gameTime)
          {
-             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.DarkSlateBlue, 1.0f, 0);
+             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.HotPink, 1.0f, 0);
              base.Draw(gameTime);
          }
     

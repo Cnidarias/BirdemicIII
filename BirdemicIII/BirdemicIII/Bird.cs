@@ -14,11 +14,12 @@ namespace BirdemicIII
     public class Bird : Character
     {
         public int officialID;
-        bool dead = false;
+        public bool dead = false;
         bool activePlayer = true;
         enum CollisionType { None, Building, Boundary, Target }
         float gameSpeed = 1.0f;
-
+        public bool haveKilled = false;
+        public int haveKilledID = -1;
         struct Bullet
         {
             public Vector3 position;
@@ -69,6 +70,7 @@ namespace BirdemicIII
         {
             if (activePlayer)
             {
+                haveKilled = false;
                 float moveSpeed = gameTime.ElapsedGameTime.Milliseconds / 1000.0f * gameSpeed;
                 MoveForward(ref xwingPosition, xwingRotation, moveSpeed);
                 ProcessKeyboard(gameTime);
@@ -77,7 +79,7 @@ namespace BirdemicIII
                 if (CheckCollision(xwingSpere) != CollisionType.None)
                 {
                     BillBoarding billy = new BillBoarding((Game1)Game, "explosiontexture", xwingPosition + new Vector3(-.05f, -0.7f, 0), new Vector2(1, 1), new Vector2(10, 1), 100.0f);
-                    billy.DrawOrder = 100000;
+                    billy.DrawOrder = 1000;
                     ((Game1)Game).Components.Add(billy);
 
                     explosionsound.Play(0.15f, 0.0f, 0.0f);
@@ -138,7 +140,7 @@ namespace BirdemicIII
             }
         }
 
-        private void UpdateCamera()
+        public void UpdateCamera()
         {
 
             ((Game1)Game).cameraRotation = Quaternion.Lerp(((Game1)Game).cameraRotation, xwingRotation, 0.1f);
@@ -174,6 +176,8 @@ namespace BirdemicIII
                     {
                         _hasKill = true;
                         _killedID = ((Person)gc).ID;
+                        haveKilled = true;
+                        haveKilledID = ((Person)gc).officialID;
                         break;
                     }
                 }
