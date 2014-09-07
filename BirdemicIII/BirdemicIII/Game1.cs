@@ -123,6 +123,7 @@ using System;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || keys.IsKeyDown(Keys.Escape))
                 this.Exit();
             //Console.WriteLine(bird.Position.Y.ToString());
+            CANDRAW = false;
             base.Update(gameTime);
         }   
  

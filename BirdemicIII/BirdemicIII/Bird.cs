@@ -18,8 +18,9 @@ namespace BirdemicIII
         bool activePlayer = true;
         enum CollisionType { None, Building, Boundary, Target }
         float gameSpeed = 1.0f;
-        public bool haveKilled = false;
-        public int haveKilledID = -1;
+        public bool haveKilled = true;
+        public int haveKilledID = 1;
+
         struct Bullet
         {
             public Vector3 position;
@@ -84,6 +85,7 @@ namespace BirdemicIII
 
                     explosionsound.Play(0.15f, 0.0f, 0.0f);
                     _alive = false;
+                    dead = true;
                     //xwingPosition = new Vector3(8, 1, -3);
                     //xwingRotation = Quaternion.Identity;
                     //gameSpeed /= 1.1f;
@@ -104,6 +106,7 @@ namespace BirdemicIII
                     xwingPosition.Z = g.Client.BirdArr[ID].Z;
                     
                     dead = g.Client.BirdArr[ID].Dead;
+                    
                 }
 
             }
@@ -172,8 +175,10 @@ namespace BirdemicIII
             {
                 if (gc.GetType() == typeof(Person))
                 {
+                    Console.WriteLine("its a start");
                     if (((Person)gc).BoundingSphere.Contains(sphere) != ContainmentType.Disjoint)
                     {
+                        Console.WriteLine("YAIOFHOIWAHFOWAOFHAWKLFSF");
                         _hasKill = true;
                         _killedID = ((Person)gc).ID;
                         haveKilled = true;

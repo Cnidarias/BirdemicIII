@@ -66,9 +66,9 @@ namespace BirdemicIII
 
             NetOutgoingMessage om = client.CreateMessage();
             om.Write((byte)PacketType.LOGIN);
-            //client.Connect("162.222.179.157", 8412, om);
+            client.Connect("162.222.179.157", 8412, om);
             
-            client.Connect("localhost", 8412, om);
+            //client.Connect("localhost", 8412, om);
             bool canStart = false;
             NetIncomingMessage inc;
             while (!canStart)
@@ -104,12 +104,17 @@ namespace BirdemicIII
         }
         public override void Update(GameTime gameTime)
         {
-            for (int i = 0; i < birdArr.Length; i++)
-            {
-                Console.WriteLine(i.ToString() + " -> " + birdArr[i].Dead.ToString());
-            }
+            //for (int i = 0; i < birdArr.Length; i++)
+            //{
+            //    Console.WriteLine(i.ToString() + " -> " + birdArr[i].Dead.ToString());
+            //}
             if (((Game1)Game).gameState.Equals(Game1.STATE.BIRD))
             {
+                if (((Game1)Game).bird.hasKill == true)
+                    Console.WriteLine("HAS KILLA TRUE");
+                if (((Game1)Game).bird.haveKilled == true)
+                    Console.WriteLine("HAVE:w KILLA TRUE");
+
                 NetOutgoingMessage om = client.CreateMessage();
                 om.Write((byte)PacketType.BIRD);
                 om.Write(((Game1)Game).ID);
@@ -140,6 +145,7 @@ namespace BirdemicIII
                 NetOutgoingMessage om = client.CreateMessage();
                 om.Write((byte)PacketType.DEAD);
                 om.Write((byte)PacketType.PERSON);
+                om.Write(((Game1)Game).ID);
                 client.SendMessage(om, NetDeliveryMethod.ReliableOrdered);
                 sentReqForNewId = true;
                 Thread.Sleep(100);
@@ -149,6 +155,7 @@ namespace BirdemicIII
                 NetOutgoingMessage om = client.CreateMessage();
                 om.Write((byte)PacketType.DEAD);
                 om.Write((byte)PacketType.BIRD);
+                om.Write(((Game1)Game).ID);
                 client.SendMessage(om, NetDeliveryMethod.ReliableOrdered);
                 sentReqForNewId = true;
                 Thread.Sleep(100);

@@ -64,11 +64,13 @@ namespace BirdemicIII
         public Character(Game game)
             : base(game)
         {
+           // BoundingSphereRenderer.InitializeGraphics(this.GraphicsDevice, 5);
+            
         }
 
         public override void Update(GameTime gameTime)
         {
-           
+            //BoundingSphereRenderer.Render(_BoundingSphere, this.GraphicsDevice, ((Game1)Game).viewMatrix, ((Game1)Game).projectionMatrix, Color.Red);
             if (_alive == false)
             {
                 if (ID == ((Game1)Game).ID)

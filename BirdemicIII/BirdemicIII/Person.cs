@@ -80,6 +80,12 @@ namespace BirdemicIII
             
             base.LoadContent();
         }
+        public override void Initialize()
+        {
+
+            base.Initialize();
+            BoundingSphereRenderer.InitializeGraphics(this.GraphicsDevice, 6);
+        }
         public override void Update(GameTime gameTime)
         {
             if (activePlayer)
@@ -91,7 +97,8 @@ namespace BirdemicIII
                 UpdateView();
                 ProcessKeyboard(gameTime);
 
-                _BoundingSphere = new BoundingSphere(_Position + new Vector3(0, 1, 0), 0.35f);
+                _BoundingSphere = new BoundingSphere(_Position + new Vector3(0, 0, 0), 10.35f);
+
                 if (CheckCollision(_BoundingSphere) != CollisionType.None)
                 {
                     _Position = initPosition;
@@ -121,6 +128,7 @@ namespace BirdemicIII
         }
         public override void Draw(GameTime gameTime)
         {
+            BoundingSphereRenderer.Render(_BoundingSphere, this.GraphicsDevice, ((Game1)Game).viewMatrix, ((Game1)Game).projectionMatrix, Color.Red);
             //DrawModel();
             drawMddel2();
             DrawBullets();
