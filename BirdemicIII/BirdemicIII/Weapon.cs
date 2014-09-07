@@ -110,8 +110,12 @@ namespace BirdemicIII
         private Vector3 startPoint = new Vector3(0, 0, 0);
         private Vector3 endPoint = new Vector3(0, 0, -50);
 
-
         protected void DetectCollisions(Vector3 dir)
+        {
+            DetectCollisions(dir, 999999999f);
+        }
+
+        protected void DetectCollisions(Vector3 dir, float maxDist)
         {
             //Ray r = new Ray(pos, dir);
             Ray r = new Ray(owner.Position + new Vector3(0, 0.1f, 0), dir);
@@ -120,7 +124,7 @@ namespace BirdemicIII
             float closestDist = -1;
 
             startPoint = pos;
-            endPoint = startPoint + 500 * dir;
+            endPoint = startPoint + maxDist * dir;
             
             /* find the closest building distance if there is one */
             foreach (BoundingBox b in ((Game1)Game).Env.BuildingBoundingBoxes)
@@ -129,7 +133,7 @@ namespace BirdemicIII
                 if (dist != null)
                 {
                     Console.WriteLine("intersect: " + ((float)dist).ToString());
-                    if (closestDist == -1 || (float)dist < closestDist)
+                    if ((float)dist < maxDist && (closestDist == -1 || (float)dist < closestDist))
                     {
                         closestDist = (float)dist;
                     }
@@ -151,7 +155,7 @@ namespace BirdemicIII
                     dist = r.Intersects(((Bird)gc).BoundingSphere);
                     if (dist != null)
                     {
-                        if (closestDist == -1 || (float)dist < closestDist)
+                        if ((float)dist < maxDist && (closestDist == -1 || (float)dist < closestDist))
                         {
                             closestDist = (float)dist;
                             closest = (Bird)gc;

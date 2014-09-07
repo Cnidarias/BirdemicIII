@@ -39,12 +39,6 @@ namespace BirdemicIII
         Texture2D bulletTexture;
         SoundEffect explosionsound;
 
-        Weapon _weapon;
-        public Weapon weapon
-        {
-            get { return _weapon; }
-        }
-
         Vector3 scale = new Vector3(0.00025f, 0.00025f, 0.00025f);
 
         protected bool _hasFired = false;
@@ -67,7 +61,11 @@ namespace BirdemicIII
             _Position = initPosition;
 
             MachineGun machine = new MachineGun(Game, _Position, this);
+            Hanger hanger = new Hanger(Game, _Position, this);
             machine.DrawOrder = 3;
+            hanger.DrawOrder = 3;
+            _weapons.Add(machine);
+            _weapons.Add(hanger);
             machine.Activate();
             _weapon = machine;
         }
