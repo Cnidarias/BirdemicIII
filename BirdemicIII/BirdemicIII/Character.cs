@@ -73,7 +73,11 @@ namespace BirdemicIII
         public override void Update(GameTime gameTime)
         {
             if (_alive == false)
+            {
+                if (this.GetType() == typeof(Person))
+                    ((Game1)Game).Components.Remove(((Person)this).weapon);
                 ((Game1)Game).Components.Remove(this);
+            }
             
             base.Update(gameTime);
         }

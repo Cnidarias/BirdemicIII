@@ -31,6 +31,12 @@ namespace BirdemicIII
         Effect effect;
         Texture2D bulletTexture;
 
+        Weapon _weapon;
+        public Weapon weapon
+        {
+            get { return _weapon; }
+        }
+
         Vector3 scale = new Vector3(0.00025f, 0.00025f, 0.00025f);
 
         protected bool _hasFired = false;
@@ -53,6 +59,7 @@ namespace BirdemicIII
             MachineGun machine = new MachineGun(Game, _Position, this);
             machine.DrawOrder = 3;
             machine.Activate();
+            _weapon = machine;
         }
 
         protected override void LoadContent()
