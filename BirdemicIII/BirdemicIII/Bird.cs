@@ -175,10 +175,12 @@ namespace BirdemicIII
             {
                 if (gc.GetType() == typeof(Person))
                 {
-                    Console.WriteLine("its a start");
-                    if (((Person)gc).BoundingSphere.Contains(sphere) != ContainmentType.Disjoint)
+                    if (((Person)gc).BS.Radius > 0)
+                        Console.WriteLine(((Person)gc).BS.ToString());
+                    if (((Person)gc).BS.Contains(sphere) != ContainmentType.Disjoint)
                     {
-                        Console.WriteLine("YAIOFHOIWAHFOWAOFHAWKLFSF");
+                        Console.WriteLine("hit");
+
                         _hasKill = true;
                         _killedID = ((Person)gc).ID;
                         haveKilled = true;

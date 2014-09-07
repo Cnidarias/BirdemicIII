@@ -104,10 +104,11 @@ namespace BirdemicIII
         }
         public override void Update(GameTime gameTime)
         {
-            //for (int i = 0; i < birdArr.Length; i++)
-            //{
-            //    Console.WriteLine(i.ToString() + " -> " + birdArr[i].Dead.ToString());
-            //}
+
+            for (int i = 0; i < birdArr.Length; i++)
+            {
+                //Console.WriteLine(i.ToString() + " -> " + birdArr[i].Dead.ToString());
+            }
             if (((Game1)Game).gameState.Equals(Game1.STATE.BIRD))
             {
                 if (((Game1)Game).bird.hasKill == true)

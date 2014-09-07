@@ -19,6 +19,8 @@ namespace BirdemicIII
         public bool haveFired = false, haveKill = false;
         public int haveKilledID = -1;
 
+        public BoundingSphere BS;
+
         enum CollisionType { None, Building, Boundary, Target }
         float gameSpeed = 1.0f;
         struct Bullet
@@ -88,6 +90,9 @@ namespace BirdemicIII
         }
         public override void Update(GameTime gameTime)
         {
+            _BoundingSphere = new BoundingSphere(_Position + new Vector3(0, 0, 0), 0.35f);
+            BS = new BoundingSphere(_Position + new Vector3(0, 0, 0), 0.35f);
+
             if (activePlayer)
             {
                 haveKill = false;
@@ -97,15 +102,14 @@ namespace BirdemicIII
                 UpdateView();
                 ProcessKeyboard(gameTime);
 
-                _BoundingSphere = new BoundingSphere(_Position + new Vector3(0, 0, 0), 10.35f);
-
-                if (CheckCollision(_BoundingSphere) != CollisionType.None)
-                {
-                    _Position = initPosition;
-                    _Rotation = Quaternion.Identity;
-                    camRotX = 0;
-                    //gameSpeed /= 1.1f;
-                }
+                Console.WriteLine(BS.ToString());
+                //if (CheckCollision(_BoundingSphere) != CollisionType.None)
+                //{
+                //    _Position = initPosition;
+                //    _Rotation = Quaternion.Identity;
+                //    camRotX = 0;
+                //    //gameSpeed /= 1.1f;
+                //}
 
 
                 UpdateCamera();
