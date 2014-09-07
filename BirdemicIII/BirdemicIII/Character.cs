@@ -75,7 +75,7 @@ namespace BirdemicIII
             if (_alive == false)
             {
                 if (this.GetType() == typeof(Person))
-                    ((Game1)Game).Components.Remove(((Person)this).weapon);
+                    ((Person)this).weapon.Deactivate();
                 ((Game1)Game).Components.Remove(this);
             }
             
