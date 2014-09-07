@@ -13,9 +13,12 @@ namespace BirdemicIII
 {
     public class Bird : DrawableGameComponent
     {
-
+        int ID;
+        bool dead = false;
+        bool activePlayer = true;
         enum CollisionType { None, Building, Boundary, Target }
         float gameSpeed = 1.0f;
+
         struct Bullet
         {
             public Vector3 position;
@@ -27,18 +30,25 @@ namespace BirdemicIII
         double lastBulletTime = 0;
         Model xwingModel;
         Vector3 xwingPosition = new Vector3(8, 1, -3);
+
         public Vector3 Position
         {
+            set { xwingPosition = value; }
             get { return xwingPosition; }
         }
+
         Quaternion xwingRotation = Quaternion.Identity;
         Effect effect;
         Texture2D bulletTexture;
 
         //Constructor
-        public Bird(Game game)
+        public Bird(Game game, bool ActivePlayer, int Id, Vector3 pos, bool AI, bool DEAD)
             : base(game)
         {
+            dead = DEAD;
+            xwingPosition = pos;
+            activePlayer = ActivePlayer;
+            ID = Id;
         }
 
         protected override void LoadContent()
@@ -54,31 +64,49 @@ namespace BirdemicIII
         }
         public override void Update(GameTime gameTime)
         {
-            float moveSpeed = gameTime.ElapsedGameTime.Milliseconds / 750.0f * gameSpeed;
-            MoveForward(ref xwingPosition, xwingRotation, moveSpeed);
-            ProcessKeyboard(gameTime);
-
-            BoundingSphere xwingSpere = new BoundingSphere(xwingPosition, 0.04f);
-            if (CheckCollision(xwingSpere) != CollisionType.None)
+            if (activePlayer)
             {
-                xwingPosition = new Vector3(8, 1, -3);
-                xwingRotation = Quaternion.Identity;
-                gameSpeed /= 1.1f;
+                float moveSpeed = gameTime.ElapsedGameTime.Milliseconds / 1000.0f * gameSpeed;
+                MoveForward(ref xwingPosition, xwingRotation, moveSpeed);
+                ProcessKeyboard(gameTime);
+
+                BoundingSphere xwingSpere = new BoundingSphere(xwingPosition, 0.04f);
+                if (CheckCollision(xwingSpere) != CollisionType.None)
+                {
+                    xwingPosition = new Vector3(8, 1, -3);
+                    xwingRotation = Quaternion.Identity;
+                    gameSpeed /= 1.1f;
+                }
+
+                UpdateCamera();
+                UpdateBulletPositions(moveSpeed);
             }
+            else
+            {
+                
+                Game1 g = ((Game1)Game);
+                if (!g.Client.BirdArr[ID].Dead)
+                {
+                    //Console.Write("I HAPPEN");
+                    xwingPosition.X = g.Client.BirdArr[ID].X;
+                    xwingPosition.Y = g.Client.BirdArr[ID].Y;
+                    xwingPosition.Z = g.Client.BirdArr[ID].Z;
+                    
+                    dead = g.Client.BirdArr[ID].Dead;
+                }
 
-
-            UpdateCamera();
-            UpdateBulletPositions(moveSpeed);
+            }
             base.Update(gameTime);
         }
         public override void Draw(GameTime gameTime)
         {
-            //DrawModel();
-            drawMddel2();
-            DrawBullets();
+            if (!((Game1)Game).Client.BirdArr[ID].Dead)
+            {
+                drawMddel2();
+                DrawBullets();
+            }
             base.Draw(gameTime);
         }
-
 
         private void UpdateBulletPositions(float moveSpeed)
         {
@@ -128,7 +156,7 @@ namespace BirdemicIII
 
             if (((Game1)Game).Env.CompleteCityBox.Contains(sphere) != ContainmentType.Contains)
                 return CollisionType.Boundary;
-
+            
            
             return CollisionType.None;
         }
@@ -172,7 +200,8 @@ namespace BirdemicIII
         private Model LoadModel(string assetName)
         {
 
-            Model newModel = Game.Content.Load<Model>(assetName); foreach (ModelMesh mesh in newModel.Meshes)
+            Model newModel = Game.Content.Load<Model>(assetName); 
+            foreach (ModelMesh mesh in newModel.Meshes)
                 foreach (ModelMeshPart meshPart in mesh.MeshParts)
                     meshPart.Effect = effect.Clone();
             return newModel;

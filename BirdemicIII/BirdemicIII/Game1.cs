@@ -13,14 +13,15 @@ using System;
  {
      public class Game1 : Microsoft.Xna.Framework.Game
      {
+         public bool CANDRAW = false;
          GraphicsDeviceManager graphics;
          public GraphicsDeviceManager Graphics
          {
              get { return graphics; }
          }
          SpriteBatch spriteBatch;
-         GraphicsDevice device;      
-       
+         GraphicsDevice device;
+         public int ID = -1;
          public Vector3 cameraPosition;
          public Vector3 cameraUpDirection;
 
@@ -33,6 +34,12 @@ using System;
          public Bird bird
          {
              get { return _bird; }
+             set { _bird = value; }
+         }
+         Client client;
+         public Client Client
+         {
+             get { return client; }
          }
 
          private Person _person;
@@ -64,20 +71,22 @@ using System;
              this.IsMouseVisible = false;
 
              _env = new environment(this);
-             _bird = new Bird(this);
+
              _person = new Person(this);
 
              _env.DrawOrder = 1;
-             //_bird.DrawOrder = 2;
              _person.DrawOrder = 2;
 
-             //Components.Add(_bird);
              Components.Add(_person);
              Components.Add(_env);
 
              MachineGun machine = new MachineGun(this, _person.Position, _person);
              machine.DrawOrder = 3;
              machine.Activate();
+
+             client = new Client(this);
+
+             Components.Add(client);
  
              base.Initialize();
          }
@@ -100,7 +109,7 @@ using System;
             KeyboardState keys = Keyboard.GetState();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || keys.IsKeyDown(Keys.Escape))
                 this.Exit();
-
+            //Console.WriteLine(bird.Position.Y.ToString());
             base.Update(gameTime);
         }   
  
@@ -111,7 +120,7 @@ using System;
              device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.DarkSlateBlue, 1.0f, 0);
              base.Draw(gameTime);
          }
- 
+    
         
      }
  }
