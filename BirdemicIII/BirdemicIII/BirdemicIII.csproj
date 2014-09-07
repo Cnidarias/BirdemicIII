@@ -16,7 +16,8 @@
     <XnaProfile>HiDef</XnaProfile>
     <XnaCrossPlatformGroupID>87a3e00c-943d-4c3c-ad22-104ca649445a</XnaCrossPlatformGroupID>
     <XnaOutputType>Game</XnaOutputType>
-    <ApplicationIcon>Game.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
     <Thumbnail>GameThumbnail.png</Thumbnail>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -129,6 +130,7 @@
     <Compile Include="Weapon.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="BirdemicIII.ico" />
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
     <None Include="Lidgren.Network.dll">
