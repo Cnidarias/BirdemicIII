@@ -72,6 +72,9 @@ namespace BirdemicIII
 
         public override void Update(GameTime gameTime)
         {
+            if (_alive == false)
+                ((Game1)Game).Components.Remove(this);
+            
             base.Update(gameTime);
         }
     }
