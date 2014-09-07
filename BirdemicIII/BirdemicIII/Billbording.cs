@@ -64,7 +64,6 @@ namespace BirdemicIII
             batch.Draw(_tex, rect, Color.White);
             batch.End();
             ((Game1)Game).GraphicsDevice.SetRenderTarget(null);
-            _tex = renderTarget; /* this might not work??????!!!!!!! */
             
             if (_xy != Vector2.Zero)
             {                
@@ -79,7 +78,8 @@ namespace BirdemicIII
                 {
                     for (int j = 0; j < _xy.X; j++)
                     {
-                        _tex.GetData<Color>(0, new Microsoft.Xna.Framework.Rectangle(j * w, i * h, w, h), s, 0, w * h);
+                        //_tex.GetData<Color>(0, new Microsoft.Xna.Framework.Rectangle(j * w, i * h, w, h), s, 0, w * h);
+                        renderTarget.GetData<Color>(0, new Microsoft.Xna.Framework.Rectangle(j * w, i * h, w, h), s, 0, w * h);
                         _texA[c] = new Texture2D(Game.GraphicsDevice, w, h);
                         _texA[c++].SetData<Color>(s);
                     }
