@@ -56,6 +56,16 @@ namespace BirdemicIII
         {
             _tex = Game.Content.Load<Texture2D>(_texName);
             
+            RenderTarget2D renderTarget = new RenderTarget2D(((Game1)Game).GraphicsDevice, (int)(_tex.Width * _size.X), (int)(_tex.Height * _size.Y));
+            Rectangle rect = new Rectangle(0, 0, (int)(_tex.Width * _size.X), (int)(_tex.Height * _size.Y));
+            ((Game1)Game).GraphicsDevice.SetRenderTarget(renderTarget);
+            SpriteBatch batch = new SpriteBatch(((Game1)Game).GraphicsDevice);
+            batch.Begin();
+            batch.Draw(_tex, rect, Color.White);
+            batch.End();
+            ((Game1)Game).GraphicsDevice.SetRenderTarget(null);
+            _tex = renderTarget; /* this might not work??????!!!!!!! */
+            
             if (_xy != Vector2.Zero)
             {                
                 ele = (int)(_xy.X * _xy.Y);

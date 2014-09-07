@@ -13,7 +13,7 @@ using System;
  {
      public class Game1 : Microsoft.Xna.Framework.Game
      {
-         public static enum STATE
+         public enum STATE
          {
              WTF,
              PERSON,
