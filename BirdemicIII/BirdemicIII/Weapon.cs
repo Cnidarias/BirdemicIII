@@ -175,6 +175,7 @@ namespace BirdemicIII
                     owner.killedID = closest.ID;
                     ((Game1)Game).person.haveKill = true;
                     ((Game1)Game).person.haveKilledID = closest.officialID;
+                    Console.WriteLine("killed a bird");
                 }
             }
             

@@ -78,7 +78,7 @@ using System;
          {
              graphics.PreferredBackBufferWidth = 800;
              graphics.PreferredBackBufferHeight = 600;
-             graphics.IsFullScreen = false;
+             graphics.IsFullScreen = true;
              graphics.ApplyChanges();
              Window.Title = "Birdemic III: The Birdemicing";
 

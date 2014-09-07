@@ -69,7 +69,7 @@ namespace BirdemicIII
         }
         public override void Update(GameTime gameTime)
         {
-            Console.WriteLine(((Game1)Game).Client.BirdArr[0].Dead.ToString());
+            //Console.WriteLine(((Game1)Game).Client.BirdArr[0].Dead.ToString());
             if (((Game1)Game).Client.BirdArr[officialID].Dead)
             {
                 BillBoarding billy = new BillBoarding((Game1)Game, "explosiontexture", xwingPosition + new Vector3(-.05f, -0.7f, 0), new Vector2(1, 1), new Vector2(10, 1), 100.0f);

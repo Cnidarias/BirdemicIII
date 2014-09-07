@@ -23,6 +23,8 @@ namespace BirdemicIII
         public bool haveFired = false, haveKill = false;
         public int haveKilledID = -1;
 
+        public bool haveKilled = false;
+
         public BoundingSphere BS;
 
         enum CollisionType { None, Building, Boundary, Target }
