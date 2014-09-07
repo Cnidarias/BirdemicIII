@@ -239,7 +239,8 @@ namespace BirdemicIII
             {
                 foreach (Effect currentEffect in mesh.Effects)
                 {
-                    Matrix worldMatrix = skyboxTransforms[mesh.ParentBone.Index] * Matrix.CreateTranslation(((Game1)Game).bird.Position);
+
+                    Matrix worldMatrix = skyboxTransforms[mesh.ParentBone.Index] * Matrix.CreateTranslation(((Game1)Game).gameState.Equals(Game1.STATE.BIRD) ? ((Game1)Game).bird.Position : ((Game1)Game).person.Position);
                     currentEffect.CurrentTechnique = currentEffect.Techniques["Textured"];
                     currentEffect.Parameters["xWorld"].SetValue(worldMatrix);
                     currentEffect.Parameters["xView"].SetValue(((Game1)Game).viewMatrix);

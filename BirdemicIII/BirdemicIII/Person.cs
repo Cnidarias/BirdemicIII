@@ -41,9 +41,12 @@ namespace BirdemicIII
         }
 
         //Constructor
-        public Person(Game game, bool ActivePlayer, int Id, Vector3 pos, bool DEAD)
+        public Person(Game game, bool ActivePlayer, int Id, Vector3 pos, bool shot, bool DEAD)
             : base(game)
         {
+            activePlayer = ActivePlayer;
+            ID = Id;
+            hasFired = shot;
             _alive = !DEAD;
             _Position = initPosition;
 

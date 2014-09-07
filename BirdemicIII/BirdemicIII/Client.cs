@@ -63,9 +63,9 @@ namespace BirdemicIII
 
             NetOutgoingMessage om = client.CreateMessage();
             om.Write((byte)PacketType.LOGIN);
-            client.Connect("162.222.179.157", 8412, om);
+            //client.Connect("162.222.179.157", 8412, om);
             
-            //client.Connect("localhost", 8412, om);
+            client.Connect("localhost", 8412, om);
             bool canStart = false;
             NetIncomingMessage inc;
             while (!canStart)
@@ -101,7 +101,7 @@ namespace BirdemicIII
         }
         public override void Update(GameTime gameTime)
         {
-            if (((Game1)Game).gameState == Game1.STATE.BIRD)
+            if (((Game1)Game).gameState.Equals(Game1.STATE.BIRD))
             {
                 NetOutgoingMessage om = client.CreateMessage();
                 om.Write((byte)PacketType.BIRD);
@@ -114,7 +114,7 @@ namespace BirdemicIII
                 om.Write(((Game1)Game).bird.killedID);
                 client.SendMessage(om, NetDeliveryMethod.Unreliable);
             }
-            if (((Game1)Game).gameState == Game1.STATE.PERSON)
+            else if (((Game1)Game).gameState.Equals(Game1.STATE.PERSON))
             {
                 NetOutgoingMessage om = client.CreateMessage();
                 om.Write((byte)PacketType.PERSON);
@@ -151,19 +151,23 @@ namespace BirdemicIII
                         {
                             byte classy = msg.ReadByte();
                             ((Game1)Game).gameState = (classy == (byte)PacketType.PERSON) ? Game1.STATE.PERSON : Game1.STATE.BIRD;
+                            Console.WriteLine(((Game1)Game).gameState.ToString());
                             logedIn = true;
                             Console.WriteLine("iawd");
                             int lID = msg.ReadInt32();
                             ((Game1)Game).ID = lID;
                             int s = msg.ReadInt32();
                             Console.WriteLine("size = " + s.ToString());
+                            Console.WriteLine(((Game1)Game).gameState.Equals(Game1.STATE.PERSON).ToString());
+
                             for (int i = 0; i < s; i++)
                             {
-                                Bird bird = new Bird((Game1)Game, (lID == msg.ReadInt32() && ((Game1)Game).gameState == Game1.STATE.BIRD) ? true : false, i, new Vector3(msg.ReadFloat(), msg.ReadFloat(), msg.ReadFloat()), msg.ReadBoolean(), msg.ReadBoolean());
+                                Bird bird = new Bird((Game1)Game, (lID == msg.ReadInt32() && ((Game1)Game).gameState.Equals(Game1.STATE.BIRD)) ? true : false, i, new Vector3(msg.ReadFloat(), msg.ReadFloat(), msg.ReadFloat()), msg.ReadBoolean(), msg.ReadBoolean());
                                 bird.DrawOrder = 20 + i;
-                                Console.WriteLine(lID.ToString());
-                                if (i == ((Game1)Game).ID && ((Game1)Game).gameState == Game1.STATE.BIRD)
+                                //Console.WriteLine(lID.ToString());
+                                if (i == ((Game1)Game).ID && ((Game1)Game).gameState.Equals(Game1.STATE.BIRD))
                                 {
+                                    Console.WriteLine("i set game1 buird ID = " + lID.ToString());
                                     ((Game1)Game).bird = bird;
                                 }
                                 ((Game1)Game).Components.Add(bird);
@@ -173,7 +177,15 @@ namespace BirdemicIII
                             Console.WriteLine("size = " + s.ToString());
                             for (int i = 0; i < s; i++)
                             {
-                                //Person person = new Person(
+                                Person person = new Person((Game1)Game, (lID == msg.ReadInt32() && ((Game1)Game).gameState.Equals(Game1.STATE.PERSON)) ? true : false, i, new Vector3(msg.ReadFloat(), msg.ReadFloat(), msg.ReadFloat()), msg.ReadBoolean(), msg.ReadBoolean());
+                                person.DrawOrder = 100 + 1;
+                                //Console.WriteLine(lID.ToString());
+                                if (i == ((Game1)Game).ID && ((Game1)Game).gameState.Equals(Game1.STATE.PERSON))
+                                {
+                                    Console.WriteLine("i happen too");
+                                    ((Game1)Game).person = person;
+                                }
+                                ((Game1)Game).Components.Add(person);
                             }
                             ((Game1)Game).CANDRAW = true;
                         }
