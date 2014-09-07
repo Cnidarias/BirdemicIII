@@ -116,6 +116,7 @@
     <Compile Include="Billbording.cs" />
     <Compile Include="Bird.cs" />
     <Compile Include="Character.cs" />
+    <Compile Include="Hanger.cs" />
     <Compile Include="Gun.cs" />
     <Compile Include="MachineGun.cs" />
     <Compile Include="Person.cs" />

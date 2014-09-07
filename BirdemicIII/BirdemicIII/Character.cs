@@ -48,6 +48,18 @@ namespace BirdemicIII
             get { return _BoundingSphere; }
         }
 
+        protected Weapon _weapon;
+        public Weapon weapon
+        {
+            get { return _weapon; }
+        }
+
+        protected List<Weapon> _weapons;
+        public List<Weapon> weapons
+        {
+            get { return _weapons; }
+        }
+
         protected Vector3 _Position = Vector3.One;
         protected Quaternion _Rotation = Quaternion.Identity;
         protected Quaternion _cameraRotation = Quaternion.Identity;
@@ -78,8 +90,22 @@ namespace BirdemicIII
                     ((Person)this).weapon.Deactivate();
                 ((Game1)Game).Components.Remove(this);
             }
+
+            KeyboardState keys = Keyboard.GetState();
+            if (keys.IsKeyDown(Keys.Tab))
+            {
+                SwitchWeapon();
+            }
             
             base.Update(gameTime);
+        }
+
+        void SwitchWeapon()
+        {
+            _weapon.Deactivate();
+            int curI = _weapons.IndexOf(_weapon);
+            _weapon = _weapons[(curI + 1) % _weapons.Count];
+            _weapon.Activate();
         }
     }
 }
